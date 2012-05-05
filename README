@@ -1,0 +1,27 @@
+This code is still experimental, poorly documented and has some conceptual flaws.
+
+USE AT YOUR OWN RISK
+
+No documentation yet, but a few hints:
+
+- arguments can be defined in config files, as environment variables or on the command line
+- config file locations can be specified on the command line (argument -conf) or as environment variable (GG_CONF)
+- the default config file locations are: /etc/gg.conf, HOME/.gg.conf and HOME/gg.conf
+- command line arguments take precedence over environment variables, which take precedence over config file settings
+- all argument names start with a single hyphen
+- all arguments are space separated lists (some arguments take only one value, so you might not recognize)
+- ArgReader(args, "GG_"), where args is of type Array[String], reads config files, environment variables starting with GG_ and command line arguments and merges them
+  it returns a FunctionArgs Object, which contains the function name and the subfunction names (in "git remote add" "remote" is the function and "add" the subfunction)
+- Functions can be registered with the FunctionRegister, e.g.: FunctionRegister("remote"::"add"::Nil) = Func(Flag("v"), AString("url")){ (verbose, url) => if(verbose) println(url) }
+- gg remote add -url 123.456.789          would not print anything
+- gg remote add -url 123.456.789 -v       would print the url 
+- have a look at the examples in the code
+- all the above assumes, that your program is called gg and the main method called by gg looks like:
+
+  def main(args: Array[String]) {
+    val functionArguments = ArgReader(args, "GG_")
+    FunctionRegister.run(functionArguments)
+  }
+
+- Func(Flag("v"), AFile("file")){ ... is a very compact way of saying: the function has two arguments, a flag named 'v' and a file named 'file'. The function body receives a Boolean and a File in this case. The conversion from strings (as all parameters are strings when they are read) to Java/Scala types happens behind the scenes.
+

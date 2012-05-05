@@ -1,0 +1,6 @@
+#!/bin/bash
+
+SCALA_ARGS_BIN="$(dirname $0)/../../bin"
+
+scala -cp "$SCALA_ARGS_BIN" Run "$@"
+
