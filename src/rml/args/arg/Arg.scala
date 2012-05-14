@@ -27,5 +27,16 @@ trait Arg[T] {
    * Takes a map that is entirely built of strings and returns the argument value of type T
    */
   def apply(argMap: Map[String, List[String]]): T
+  
+  /**
+   * Convenience method for better readability
+   */
+  def withDefault(defaultArgs: Arg[T]*) = WithDefault(this, defaultArgs: _*)
+  
+  /**
+   * Convenience method for better readability
+   */
+  def withAlias(aliases: String*) = WithAlias(this, aliases: _*)
+  
 }
 

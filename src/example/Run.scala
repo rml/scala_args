@@ -20,6 +20,8 @@ import rml.args.conversions.strings.PUpperString
 import rml.args.conversions.strings.PLowerString
 import rml.args.conversions.strings.LowerString
 import rml.args.conversions.strings.UpperString
+import rml.args.conversions.basic.AFloat
+import rml.args.arg.WithAlias
 
 object Run {
 
@@ -40,6 +42,9 @@ object Run {
   FunctionRegister("yes")             = Func(Flag("y"), Flag("z")){ (a, b) => println(a); println(b) }
   FunctionRegister("upper")           = Func(PUpperString(1)){ println }
   FunctionRegister("lower")           = Func(PLowerString(1)){ println }
+  FunctionRegister("def")             = Func(AFloat("a").withDefault(AFloat("b"))){ println }
+  FunctionRegister("al")              = Func(WithAlias(AFloat("a"), "c", "-anumber")){ println }
+  FunctionRegister("al2")             = Func(AFloat("a").withAlias("c", "-anumber").withDefault(FixArg(78f))){ println }
   
   val uplo = Func(LowerString("l"), UpperString("u")){ (lo, up) => 
     println("Upper: " + up)
