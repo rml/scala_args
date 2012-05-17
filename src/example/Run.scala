@@ -3,7 +3,7 @@ import java.io.IOException
 import scala.tools.nsc.io.File
 import rml.args.manager.FunctionRegister
 import rml.args.domain.Func
-import rml.args.conversions.strings.AString
+import rml.args.conversions.strings._
 import rml.args.conversions.basic.AnInt
 import rml.args.conversions.files.PFile
 import rml.args.conversions.basic.PInt
@@ -22,6 +22,9 @@ import rml.args.conversions.strings.LowerString
 import rml.args.conversions.strings.UpperString
 import rml.args.conversions.basic.AFloat
 import rml.args.arg.WithAlias
+import rml.args.multi.Db
+import rml.args.arg.FromFile
+import rml.args.conversions.files.Files
 
 object Run {
 
@@ -45,6 +48,7 @@ object Run {
   FunctionRegister("def")             = Func(AFloat("a").withDefault(AFloat("b"))){ println }
   FunctionRegister("al")              = Func(WithAlias(AFloat("a"), "c", "-anumber")){ println }
   FunctionRegister("al2")             = Func(AFloat("a").withAlias("c", "-anumber").withDefault(FixArg(78f))){ println }
+  FunctionRegister("db")              = Func(FromFile(Db(), Files("dbconf"), "db")){ c => printf("Url:  %s\nUser: %s\nPass: %s\n", c._1, c._2, c._3)}
   
   val uplo = Func(LowerString("l"), UpperString("u")){ (lo, up) => 
     println("Upper: " + up)
@@ -54,8 +58,17 @@ object Run {
   FunctionRegister("uplo")            = uplo
     
   def main(args: Array[String]) {
-    val functionArguments = ArgReader(args, "GG_")
-    FunctionRegister.run(functionArguments)
+    
+    val prefix = "GG_"
+    
+    FunctionRegister("conf") = Func{ println("Default config files:") ; ArgReader.defaultConfFilePaths(prefix).foreach(println)}
+
+    try {
+      val functionArguments = ArgReader(args, prefix)
+      FunctionRegister.run(functionArguments)
+    } catch {
+      case iae: IllegalArgumentException => println(iae.getMessage)
+    }
   }
 
 }
