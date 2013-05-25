@@ -3,8 +3,13 @@ import scala.actors.Actor
 import rml.args.domain.FunctionDefinition
 import rml.args.domain.FunctionArgs
 import rml.args.domain.Func
-import rml.args.arg.Opt
+import rml.args.argdecorator.Opt
 import rml.args.conversions.strings.PString
+import rml.args.exceptions.IllegalArgException
+import rml.args.reader.ArgReader
+import rml.args.conversions.strings.PString
+import rml.args.arg.Flag
+import rml.args.conversions.strings.JString
 
 /**
  * Central register for function definitions
@@ -48,7 +53,7 @@ object FunctionRegister {
     
     getPartKey(key) match {
       case Some(k) => register(k)
-      case None => throw new IllegalArgumentException
+      case None => throw new IllegalArgException
     }
   }
 
@@ -92,7 +97,7 @@ object FunctionRegister {
     // Arguments, that are not part of the function name are treated as positional arguments
     def adjust(args: FunctionArgs) = if(fullKey == partKey) args else {
       val (subfncs, posArgs) = args.subfuncs.splitAt(partKey.length - 1)
-      if(args.args.contains("-")) throw new IllegalArgumentException("Too many subfunction arguments: " + subfncs)
+      if(args.args.contains("-")) throw new IllegalArgException("Too many subfunction arguments: " + subfncs)
       args.copy(subfuncs = subfncs, args = args.args + ("-" -> posArgs))
     }
     
@@ -123,26 +128,42 @@ object FunctionRegister {
    * Convenience function
    */
   def apply(args: FunctionArgs) = run(args)
-  
+
   /**
    * Print information about registered functions to the console
    */
-  def help = Func(Opt(PString(1))){ filter =>
+  def help = Func(Opt(JString("-")), Flag("v")){ (filter, v) =>
 
-    val funcs = filter match {
-      case Some(f) => register.filterKeys(_(0).startsWith(f))
-      case None => register
+    val verbose = v || (filter.isDefined && filter.get.contains(" "))
+
+    val funcs = for{
+      (key, func) <- register if !key.isEmpty
+      name = key.mkString(" ") if !filter.isDefined || name.startsWith(filter.get)
+    } yield (key, name, func)
+
+
+    if(funcs.isEmpty || !funcs.tail.isEmpty){
+   
+    	if(verbose){
+    	  val max = funcs.map(_._2.size).max
+    	  val format = "%-" + (max + 5) + "s%s\n"
+    				
+    	  for((key, name, func) <- funcs.toList.sortBy(_._2)) printf(format, name, func.description)
+    				
+    	} else {
+    	  funcs.map(_._1.head).toList.distinct.sorted.foreach(println)
+    	}
+    	
+    } else {
+      
+    	val (key, name, func) = funcs.head
+    	val format = "%-" + (key.length + 5) + "s     %-10s %s\n"
+    	printf(format, name, func.description, "")
+
+    	for(arg <- func.args) {
+    	  printf(format, "  ", arg.key, arg.showdesc)    	  
+    	}
     }
-    
-    for((mainfunc, group) <- funcs.groupBy(_._1(0)).toList.sortBy(_._1) if mainfunc != "" ){
-      println(mainfunc)
-      for(func <- group ; (key, fdef) = func){
-        if(!key.tail.isEmpty)
-          println("    " + key.tail.mkString(" "))
-        println("        " + fdef.args.mkString(", "))
-        print("        ")
-        println(if(fdef.description.isEmpty) "No description" else fdef.description)
-      }
-    }
-  }  
+  }
+
 }

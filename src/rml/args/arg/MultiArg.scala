@@ -11,7 +11,7 @@ trait MultiArg[T] extends Arg[T] {
   
   override val key: String = "[Multi Arg]"
     
-  override def allKeysFound(argMap: Map[String, List[String]]): Boolean = args.forall(_.allKeysFound(argMap))
+  override def noInformationMissing(argMap: Map[String, List[String]]): Boolean = args.forall(_.noInformationMissing(argMap))
   
   override def toString = args.mkString("MultiArg(", ", ", ")")
 }

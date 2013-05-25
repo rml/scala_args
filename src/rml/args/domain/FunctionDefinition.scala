@@ -1,15 +1,14 @@
 package rml.args.domain
 
 import rml.args.arg.Arg
-import rml.args.arg.ArgMapper
+import rml.args.argmapper._
 import rml.args.reader.ArgReader
+import rml.args.arg.DescriptionMethods
 
-trait FunctionDefinition[T] {
+trait FunctionDefinition[T] extends DescriptionMethods[FunctionDefinition[T]]{
 
   val args = List[Arg[_]]()
   
-  val description: String = ""
-
   def getArg(argName: String) = args.find(_.key == argName)
     
   def run(args: FunctionArgs): T
@@ -24,21 +23,18 @@ trait FunctionDefinition[T] {
       
       case None => args.copy(lastArg = "")
       
-      case Some(lastArg) => lastArg match {
+      case Some(lastArg) => {
         
-        case a: ArgMapper[_] =>
-
-          val lastList = args.args(a.key)
-          val trailing = a.getUnused(lastList)
+          val lastList = args.args(lastArg.key)
+          val trailing = lastArg.getUnused(lastList)
         
           if(trailing.isEmpty)
             args.copy(lastArg = "")
           else {
-            val leading = a.getUsed(lastList)
-            val adjustedArgs = args.args + (a.key -> leading, "-" -> trailing)
+            val leading = lastArg.getUsed(lastList)
+            val adjustedArgs = args.args + (lastArg.key -> leading, "-" -> trailing)
             args.copy(lastArg = "", args = adjustedArgs)
           }
-        case _ => args.copy(lastArg = "")
       }
     }
   }

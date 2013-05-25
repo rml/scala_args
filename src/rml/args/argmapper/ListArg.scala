@@ -1,4 +1,4 @@
-package rml.args.arg
+package rml.args.argmapper
 
 /**
  * Maps each argument of a list individually and returns a list

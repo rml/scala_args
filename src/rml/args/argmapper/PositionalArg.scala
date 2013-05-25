@@ -1,4 +1,5 @@
-package rml.args.arg
+package rml.args.argmapper
+import rml.args.exceptions.IllegalArgException
 
 /**
  * Positional arguments have no names, they are accessed by position.
@@ -22,6 +23,6 @@ trait PositionalArg[T] extends ArgMapper[T] {
     val argArray = argList.toArray
     val idx = pos - 1
     if(idx < argArray.length) mapToType(argArray(idx)) else
-      throw new IllegalArgumentException("No value at position " + pos + ". Found only " + argArray.length + " values (" + argList.mkString("'", "', '", "'") + ")")
+      throw new IllegalArgException("No value at position " + pos + ". Found only " + argArray.length + " values (" + argList.mkString("'", "', '", "'") + ")")
   }
 }

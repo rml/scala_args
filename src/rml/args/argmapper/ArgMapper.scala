@@ -1,4 +1,7 @@
-package rml.args.arg
+package rml.args.argmapper
+
+import rml.args.exceptions.IllegalArgException
+import rml.args.arg.Arg
 
 /**
  * Trait, that maps lists of arguments to the final argument (which can be a list or a single argument).
@@ -12,26 +15,16 @@ trait ArgMapper[T] extends Arg[T] {
    */
   type R
 
-  override def allKeysFound(argMap: Map[String, List[String]]) = argMap.contains(key)
+  override def noInformationMissing(argMap: Map[String, List[String]]) = argMap.contains(key)
 
-  /**
-   * returns the arguments not used by this mapper
-   */
-  def getUnused(argList: List[String]) = List[String]()
-  
-  /**
-   * returns the arguments used by this mapper
-   */
-  def getUsed(argList: List[String]) = argList
-  
   override def apply(argMap: Map[String, List[String]]): T = {
     
-    if(!allKeysFound(argMap)) throw new IllegalArgumentException("The argument " + key + " is missing")
+    if(!noInformationMissing(argMap)) throw new IllegalArgException("The argument " + key + " is missing")
     
     val argList = argMap(key)
     
     if(!getUnused(argList).isEmpty) 
-      throw new IllegalArgumentException("Found unused trailing value(s) for argument " + key + ": " + 
+      throw new IllegalArgException("Found unused trailing value(s) for argument " + key + ": " + 
           getUnused(argList).mkString("'", "', '", "'") + 
           " (the value(s): " + getUsed(argList).mkString("'", "', '", "'") + " is/are sufficient)")
     

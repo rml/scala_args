@@ -2,6 +2,7 @@ package rml.args.reader
 
 import scala.util.parsing.combinator.RegexParsers
 import rml.args.domain.FunctionArgs
+import rml.args.exceptions.IllegalArgException
 
 /**
  * Parses function name and arguments
@@ -46,7 +47,7 @@ object CommandlineArgReader extends RegexParsers {
     parseAll(parser, stringToParse) match {
         case Success(result, _) => result
         case failure: NoSuccess => 
-          throw new IllegalArgumentException(formatError(stringToParse, failure, errorColoring))
+          throw new IllegalArgException(formatError(stringToParse, failure, errorColoring))
       }
   }
   

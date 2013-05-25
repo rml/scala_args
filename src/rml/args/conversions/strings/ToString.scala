@@ -1,6 +1,7 @@
 package rml.args.conversions.strings
 
 import rml.args.arg._
+import rml.args.argmapper._
 
 class ToString{
   def mapToType(value: String): String = value

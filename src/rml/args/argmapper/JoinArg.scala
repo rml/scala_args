@@ -1,4 +1,4 @@
-package rml.args.arg
+package rml.args.argmapper
 
 /**
  * Joins all arguments to a String, before mapping them as a single argument

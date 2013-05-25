@@ -1,42 +1,38 @@
 package rml.args.arg
 
 import scala.tools.nsc.io.File
+import rml.args.argdecorator.WithAlias
+import rml.args.argdecorator.WithDefault
 
 /**
  * Trait that represents an argument of type T
  */
-trait Arg[T] {
+trait Arg[+T] extends ConvenienceMethods[T] with DescriptionMethods[Arg[T]] {
 
   /**
    * Name that identifies the argument
    */
   val key: String
+  
+  /**
+   * Checks, whether the argument has all information needed to return a meaningful value
+   */
+  def noInformationMissing(argMap: Map[String, List[String]]): Boolean
 
   /**
-   * Argument description (optional)
+   * returns the strings not used by this argument
    */
-  val desc: String = ""
-
+  def getUnused(argList: List[String]): List[String] = List.empty
+  
   /**
-   * Checks, whether the key (for simple arguments) or all keys (for complex arguments)
-   * are present in the argument map
+   * returns the strings used by this argument
    */
-  def allKeysFound(argMap: Map[String, List[String]]): Boolean
-
+  def getUsed(argList: List[String]): List[String] = argList
+  
   /**
    * Takes a map that is entirely built of strings and returns the argument value of type T
    */
   def apply(argMap: Map[String, List[String]]): T
-  
-  /**
-   * Convenience method for better readability
-   */
-  def withDefault(defaultArgs: Arg[T]*) = WithDefault(this, defaultArgs: _*)
-  
-  /**
-   * Convenience method for better readability
-   */
-  def withAlias(aliases: String*) = WithAlias(this, aliases: _*)
   
 }
 

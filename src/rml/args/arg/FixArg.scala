@@ -7,7 +7,9 @@ package rml.args.arg
  */
 case class FixArg[T](val fixArg: T, val key: String = "[Fix Arg]") extends Arg[T] {
 
-  override def allKeysFound(argMap: Map[String, List[String]]) = true
+  override def showdesc: String = fixArg.toString()
+
+  override def noInformationMissing(argMap: Map[String, List[String]]) = true
 
   override def apply(argMap: Map[String, List[String]]): T = fixArg
 }
