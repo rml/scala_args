@@ -1,6 +1,5 @@
 package rml.args.arg
 
-import scala.tools.nsc.io.File
 import rml.args.argdecorator.WithAlias
 import rml.args.argdecorator.WithDefault
 

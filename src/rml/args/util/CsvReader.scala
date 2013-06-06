@@ -1,5 +1,6 @@
 package rml.args.util
-import scala.tools.nsc.io.File
+
+import scala.reflect.io.File
 
 /**
  * Minimal temporary implementation, without any error handling

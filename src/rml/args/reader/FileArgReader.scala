@@ -1,6 +1,7 @@
 package rml.args.reader
 
-import scala.tools.nsc.io.File
+import scala.reflect.io.File
+
 
 case class FileArgReader(propFile: File) extends PrefixArgReader {
 

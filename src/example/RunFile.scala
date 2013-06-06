@@ -1,10 +1,10 @@
 package example
-import scala.tools.nsc.io.File
 
 import rml.args.argdecorator.WithDefault
 import rml.args.conversions.files._
 import rml.args.domain.Func
 import rml.args.manager.FunctionRegister
+import scala.reflect.io.File
 
 object RunFile {
 

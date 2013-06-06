@@ -2,5 +2,6 @@
 
 SCALA_ARGS_BIN="$(dirname $0)/../../bin"
 
-scala -cp "$SCALA_ARGS_BIN" Run "$@"
+echo scala -cp "$SCALA_ARGS_BIN" example.Run "$@"
+scala -cp "$SCALA_ARGS_BIN" example.Run "$@"
 

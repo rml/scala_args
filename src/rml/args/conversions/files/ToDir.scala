@@ -1,11 +1,16 @@
 package rml.args.conversions.files
 
-import rml.args.arg._
-import rml.args.argmapper._
-import scala.tools.nsc.io.File
-import rml.args.exceptions.IllegalArgException
-import rml.args.argdecorator.WithDefault
+import scala.reflect.io.File
+import scala.reflect.io.Path.string2path
+
+import rml.args.arg.FixArg
 import rml.args.argdecorator.Env
+import rml.args.argdecorator.WithDefault
+import rml.args.argmapper.List0Arg
+import rml.args.argmapper.ListArg
+import rml.args.argmapper.PositionalArg
+import rml.args.argmapper.SingleArg
+import rml.args.exceptions.IllegalArgException
 
 class ToDir {
   def mapToType(value: String): File = {

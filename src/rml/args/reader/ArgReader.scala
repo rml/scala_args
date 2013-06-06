@@ -1,8 +1,8 @@
 package rml.args.reader
 
-import scala.tools.nsc.io.File
 import java.io.IOException
 import rml.args.domain.FunctionArgs
+import scala.reflect.io.File
 
 object ArgReader {
 

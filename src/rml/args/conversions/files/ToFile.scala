@@ -2,8 +2,8 @@ package rml.args.conversions.files
 
 import rml.args.arg._
 import rml.args.argmapper._
-import scala.tools.nsc.io.File
 import rml.args.exceptions.IllegalArgException
+import scala.reflect.io.File
 
 class ToFile {
   def mapToType(value: String): File = File(value)

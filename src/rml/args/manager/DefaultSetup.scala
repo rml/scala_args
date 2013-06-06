@@ -1,7 +1,7 @@
 package rml.args.manager
 import rml.args.domain.Func
 import rml.args.reader.ArgReader
-import scala.tools.nsc.io.File
+import scala.reflect.io.File
 
 object DefaultSetup {
 
