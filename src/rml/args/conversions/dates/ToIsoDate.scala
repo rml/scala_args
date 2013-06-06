@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import rml.args.arg.Arg
+import rml.args.argmapper.List0Arg
 import rml.args.argmapper.ListArg
 import rml.args.argmapper.PositionalArg
 import rml.args.argmapper.SingleArg
@@ -15,6 +16,8 @@ class ToIsoDate {
 case class AnIsoDate(val key: String) extends ToIsoDate with SingleArg[Date]
 
 case class IsoDates(val key: String) extends ToIsoDate with ListArg[Date]
+
+case class IsoDates0(val key: String) extends ToIsoDate with List0Arg[Date]
 
 case class PIsoDate(val pos: Int) extends ToIsoDate with PositionalArg[Date]
 

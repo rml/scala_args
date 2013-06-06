@@ -13,4 +13,6 @@ case class JUpperString(val key: String) extends ToUpperString with JoinArg[Stri
 
 case class UpperStrings(val key: String) extends ToUpperString with ListArg[String]
 
+case class UpperStrings0(val key: String) extends ToUpperString with List0Arg[String]
+
 case class PUpperString(val pos: Int) extends ToUpperString with PositionalArg[String]
