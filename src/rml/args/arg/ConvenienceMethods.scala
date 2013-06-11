@@ -10,8 +10,8 @@ trait ConvenienceMethods[+T] { this: Arg[T] =>
   def withDefault[X >: T](default: X): Arg[X] = new WithDefault(this, default)
   def -> [X >: T](default: X): Arg[X] = new WithDefault(this, default)
 
-  def withAlias[T](aliases: String*) = WithAlias(this, aliases: _*)
-  def ~ [T](aliases: String*) = WithAlias(this, aliases: _*)
-  def + [T](aliases: String*) = WithAlias(this, aliases: _*)
+  def withAlias(aliases: String*): Arg[T] = WithAlias(this, aliases: _*)
+  def ~ (aliases: String*): Arg[T] = withAlias(aliases: _*)
+  def + (aliases: String*): Arg[T] = withAlias(aliases: _*)
   
 }

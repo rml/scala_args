@@ -8,13 +8,25 @@ import rml.args.argdecorator.WithAlias
 import rml.args.domain.FunctionDefinition
 import rml.args.domain./
 import rml.args.argdecorator.Env
+import rml.args.argdecorator.WithFlagAlias
+import rml.args.conversions.basic.Floats0
+import rml.args.conversions.basic.Booleans0
+import rml.args.conversions.basic.Longs0
+import rml.args.conversions.basic.Ints0
+import rml.args.conversions.basic.BigDecimals0
+import rml.args.conversions.basic.AnInt
+import rml.args.conversions.basic.Bytes0
+import rml.args.conversions.basic.AFloat
+import rml.args.conversions.basic.Shorts0
+import rml.args.conversions.basic.PInt
+import rml.args.conversions.basic.Doubles0
 
 object RunBasic {
     
   FunctionRegister("sq")              = / / "Calculate square" /
                                         Func(AnInt("x") ~ "-" -> 10 -- "Number"
                                             ){ x => println(x * x)}
-  
+
   FunctionRegister("quad")            = / / "Alias for 'sq'" -- FunctionRegister("sq")
   
   FunctionRegister("*")               = / / "Multiply" /

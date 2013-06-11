@@ -1,5 +1,6 @@
 package rml.args.arg
 import rml.args.exceptions.IllegalArgException
+import rml.args.argdecorator.WithFlagAlias
 
 /**
  * Optional boolean argument. If the key exists, it is true, if the key is absent, it is false.
@@ -19,4 +20,5 @@ case class Flag(val key: String) extends Arg[Boolean] {
       throw new IllegalArgException("The flag " + key + " should not have any values (found " + argList.mkString("'", "', '", "')"))
   }
 
+  override def withAlias(aliases: String*): Arg[Boolean] = WithFlagAlias(this, aliases: _*)
 }
