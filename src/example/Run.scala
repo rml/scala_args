@@ -14,6 +14,7 @@ object Run {
   RunBasic
   RunDiv
   RunFile
+  RunMap
   RunString
 
   def main(args: Array[String]) {
