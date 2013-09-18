@@ -10,6 +10,7 @@ import rml.args.reader.ArgReader
 import rml.args.conversions.strings.PString
 import rml.args.arg.Flag
 import rml.args.conversions.strings.JString
+import rml.args.argmapper.PositionalArg
 
 /**
  * Central register for function definitions
@@ -161,7 +162,11 @@ object FunctionRegister {
     	printf(format, name, func.description, "")
 
     	for(arg <- func.args) {
-    	  printf(format, "  ", arg.key, arg.showdesc)    	  
+    	  val suffix = arg match {
+    	    case parg: PositionalArg[_] => " (" + parg.pos + ")"
+    	    case _ => ""
+    	  }
+    	  printf(format, "  ", arg.key + suffix, arg.showdesc)    	  
     	}
     }
   }
