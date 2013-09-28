@@ -19,6 +19,8 @@ trait PositionalArg[T] extends ArgMapper[T] {
    */
   val key = "-"
 
+  override def noInformationMissing(argMap: Map[String, List[String]]) = argMap.contains(key) && argMap(key).length >= pos  
+    
   override def mapListToType(argList: List[String]): T = {
     val argArray = argList.toArray
     val idx = pos - 1

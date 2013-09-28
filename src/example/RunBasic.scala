@@ -20,6 +20,8 @@ import rml.args.conversions.basic.AFloat
 import rml.args.conversions.basic.Shorts0
 import rml.args.conversions.basic.PInt
 import rml.args.conversions.basic.Doubles0
+import rml.args.argdecorator.Opt
+import rml.args.conversions.strings.PString
 
 object RunBasic {
     
@@ -47,4 +49,8 @@ object RunBasic {
   FunctionRegister("double")          = Func(Doubles0("-")){println}
   FunctionRegister("float")           = / / "List of floats" /
                                         Func(Floats0("-")){println}
+  
+  FunctionRegister("pos")             = / / "Optional positional arguments" /
+                                        Func(Opt(PString(1)), Opt(PString(2))){ (a, b) => println(a + " " + b)}
+
 }
