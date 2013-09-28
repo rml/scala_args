@@ -18,6 +18,13 @@ trait MultiArg[T] extends Arg[T] {
 
 object MultiArg {
 
+  def apply[T1, R](arg1: Arg[T1])(func: Function1[T1, R]) = new MultiArg[R] {
+
+    override val args = List(arg1)
+
+    override def apply(args: Map[String, List[String]]): R = func(arg1(args))
+  }
+
   def apply[T1, T2, R](arg1: Arg[T1], arg2: Arg[T2])(func: Function2[T1, T2, R]) = new MultiArg[R] {
 
     override val args = List(arg1, arg2)
@@ -167,7 +174,7 @@ object MultiArg {
   
   def create(maxArgCount: Int) {
     
-    for(n <- 2 to maxArgCount){
+    for(n <- 1 to maxArgCount){
       val r = 1 to n
       val functype = r.map("T" + _).mkString("[", ", ", ", R]")
       print("  def apply" + functype)

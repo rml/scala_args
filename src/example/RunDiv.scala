@@ -9,12 +9,16 @@ import rml.args.conversions.db.DbFromFile
 import rml.args.conversions.db.DbsFromFile
 import rml.args.conversions.files.Files
 import rml.args.conversions.strings.JString
+import rml.args.arg.MultiArg
 
 object RunDiv {
 
-  FunctionRegister("remote"::"add"::Nil) = Func(Flag("v"), AString("url")){ (verbose, url) => if(verbose) println(url) }
-  FunctionRegister("generate")        = Func(AnInt("max")){ Func.create }
-  FunctionRegister("env")             = Func(AString("-") -> "" -- "Filter"){ f => 
+  val ma = MultiArg(AString("a") -- "aa", AString("b") -- "bb"){ _ + " " + _}
+  
+  FunctionRegister("remote"::"add"::Nil)   = Func(Flag("v"), AString("url")){ (verbose, url) => if(verbose) println(url) }
+  FunctionRegister("generate")             = Func(AnInt("max")){ Func.create }
+  FunctionRegister("generate"::"ma"::Nil)  = Func(AnInt("max")){ MultiArg.create }
+  FunctionRegister("env")                  = Func(AString("-") -> "" -- "Filter"){ f => 
     import collection.JavaConversions._
     for((k, v) <- System.getenv().toList.sortBy(_._1) if k.startsWith(f)) println(k + "\t" + v)
   }
@@ -22,4 +26,5 @@ object RunDiv {
   FunctionRegister("dbff")            = Func(DbFromFile("db", Files("dbconf")) -- "Db", JString("-")){(d, s) => println(d); println(s)} -- "Database from file"
   FunctionRegister("dbsff")           = Func(DbsFromFile("db", Files("dbconf")) -- "Db"){println} -- "Databases from file"
   
+  FunctionRegister("ma")              = Func(ma){println} -- "MultiArg Test"
 }
