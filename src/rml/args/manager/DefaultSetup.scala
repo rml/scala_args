@@ -1,13 +1,15 @@
 package rml.args.manager
+
+import scala.reflect.io.File
+
 import rml.args.domain.Func
 import rml.args.reader.ArgReader
-import scala.reflect.io.File
 
 object DefaultSetup {
 
   def apply(prefix: String) = {
     
-    FunctionRegister("help")            = FunctionRegister.help
+    FunctionRegister("help")            = HelpFunctions().help
     FunctionRegister("")                = FunctionRegister("help")
     
     FunctionRegister("conf")            = Func{ 

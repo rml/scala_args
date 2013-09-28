@@ -11,6 +11,9 @@ import rml.args.conversions.strings.PString
 import rml.args.arg.Flag
 import rml.args.conversions.strings.JString
 import rml.args.argmapper.PositionalArg
+import rml.args.arg.Arg
+import rml.args.arg.MultiArg
+import rml.args.exceptions.FunctionNotFoundException
 
 /**
  * Central register for function definitions
@@ -21,6 +24,8 @@ object FunctionRegister {
    * Function definitions are stored in this mutable map
    */
   private val register = scala.collection.mutable.Map[List[String], FunctionDefinition[_]]()
+
+  def list(filter: String): List[(String, FunctionDefinition[_])] = register.filter{case(k, v) => k.mkString(" ") contains filter}.map{case(k, v) => (k.mkString(" "), v)}.toList.sortBy(_._1)
 
   /**
    * Register a new function
@@ -92,7 +97,7 @@ object FunctionRegister {
     val fullKey = args.func :: args.subfuncs
     val partKey = getPartKey(fullKey) match {
       case Some(k) => k
-      case None => throw new IllegalStateException("No definition found for function '" + args.func + "'")
+      case None => throw new FunctionNotFoundException(fullKey)
     }
 
     // Arguments, that are not part of the function name are treated as positional arguments
@@ -130,45 +135,5 @@ object FunctionRegister {
    */
   def apply(args: FunctionArgs) = run(args)
 
-  /**
-   * Print information about registered functions to the console
-   */
-  def help = Func(Opt(JString("-")), Flag("v")){ (filter, v) =>
-
-    val verbose = v || (filter.isDefined && filter.get.contains(" "))
-
-    val funcs = for{
-      (key, func) <- register if !key.isEmpty
-      name = key.mkString(" ") if !filter.isDefined || name.startsWith(filter.get)
-    } yield (key, name, func)
-
-
-    if(funcs.isEmpty || !funcs.tail.isEmpty){
-   
-    	if(verbose){
-    	  val max = funcs.map(_._2.size).max
-    	  val format = "%-" + (max + 5) + "s%s\n"
-    				
-    	  for((key, name, func) <- funcs.toList.sortBy(_._2)) printf(format, name, func.description)
-    				
-    	} else {
-    	  funcs.map(_._1.head).toList.distinct.sorted.foreach(println)
-    	}
-    	
-    } else {
-      
-    	val (key, name, func) = funcs.head
-    	val format = "%-" + (key.length + 5) + "s     %-10s %s\n"
-    	printf(format, name, func.description, "")
-
-    	for(arg <- func.args) {
-    	  val suffix = arg match {
-    	    case parg: PositionalArg[_] => " (" + parg.pos + ")"
-    	    case _ => ""
-    	  }
-    	  printf(format, "  ", arg.key + suffix, arg.showdesc)    	  
-    	}
-    }
-  }
 
 }

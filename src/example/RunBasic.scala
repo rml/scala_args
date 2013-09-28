@@ -51,6 +51,9 @@ object RunBasic {
                                         Func(Floats0("-")){println}
   
   FunctionRegister("pos")             = / / "Optional positional arguments" /
-                                        Func(Opt(PString(1)), Opt(PString(2))){ (a, b) => println(a + " " + b)}
+                                        Func(Opt(PString(1)) -- "p1", Opt(PString(2)) -- "p2"){ (a, b) => println(a + " " + b)}
+
+  FunctionRegister("pos2")             = / / "Positional arguments" /
+                                        Func(PString(1) -- "p1", PString(2) -- "p2"){ (a, b) => println(a + " " + b)}
 
 }
