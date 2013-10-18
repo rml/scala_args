@@ -1,5 +1,5 @@
 package rml.args.manager
-import scala.actors.Actor
+
 import rml.args.domain.FunctionDefinition
 import rml.args.domain.FunctionArgs
 import rml.args.domain.Func
