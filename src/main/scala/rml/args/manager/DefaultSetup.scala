@@ -3,7 +3,7 @@ package rml.args.manager
 import scala.reflect.io.File
 
 import rml.args.domain.Func
-import rml.args.reader.ArgReader
+import rml.args.reader.ConfReader
 
 object DefaultSetup {
 
@@ -14,7 +14,7 @@ object DefaultSetup {
     
     FunctionRegister("conf")            = Func{ 
       println("Default config files:\nFound  File")
-      ArgReader.defaultConfFilePaths(prefix).foreach(p => println("[" + (if(File(p).exists) "X" else " ") + "]    " + p))
+      ConfReader.defaultConfFilePaths(prefix).foreach(p => println("[" + (if(File(p).exists) "X" else " ") + "]    " + p))
     }
   }
 }

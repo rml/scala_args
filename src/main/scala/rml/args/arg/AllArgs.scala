@@ -1,6 +1,6 @@
 package rml.args.arg
 
-case class AllArgs extends Arg[Map[String, List[String]]] {
+case class AllArgs() extends Arg[Map[String, List[String]]] {
 
   val key = "[all]"
   

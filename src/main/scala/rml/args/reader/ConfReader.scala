@@ -3,10 +3,12 @@ package rml.args.reader
 import java.io.IOException
 import rml.args.domain.FunctionArgs
 import scala.reflect.io.File
+import rml.args.domain.Config
+import rml.args.domain.FullConfig
 
-object ArgReader {
+object ConfReader {
 
-  def apply(args: Array[String], prefix: String): FunctionArgs = {
+  def apply(args: Array[String], prefix: String): FullConfig = {
 
     val cmdArgs: FunctionArgs = readCommandLineArgs(args)
 	val envArgs: Map[String, List[String]] = if(prefix.isEmpty) Map() else readEnvironmentVars(prefix)
@@ -14,12 +16,11 @@ object ArgReader {
 	val configFilePaths: List[File] = getConfigFiles(
                 cmdArgs.args.get("conf"), envArgs.get("conf"), defaultConfFilePaths(prefix))
 	    
-    val fileArgs: Map[String, List[String]] = if(configFilePaths.isEmpty) Map()
-    										  else configFilePaths.map(parseConfigFile(_)).reduceLeft(_ ++ _)
+    val fileArgs: List[Config] = if(configFilePaths.isEmpty) Nil
+    										  else configFilePaths.map(f => Config(parseConfigFile(f), f.path))
 
-    val mergedArgs = fileArgs ++ envArgs ++ cmdArgs.args
-    
-    FunctionArgs(cmdArgs.func, cmdArgs.subfuncs, mergedArgs, cmdArgs.lastArg)
+    val cmdConf = Config(cmdArgs.args, "cmd")
+    FullConfig(cmdConf, Config(envArgs, "env") :: fileArgs, cmdArgs.func, cmdArgs.subfuncs)
   }
   
   def readCommandLineArgs(args: Array[String]): FunctionArgs = CommandlineArgReader(args)

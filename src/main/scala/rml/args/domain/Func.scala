@@ -11,7 +11,7 @@ object Func {
 
     override val args = List()
     
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       func
     }
   }
@@ -20,7 +20,7 @@ object Func {
 
     override val args = List(arg1)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m))
     }
@@ -30,7 +30,7 @@ object Func {
 
     override val args = List(arg1, arg2)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m))
     }
@@ -40,7 +40,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m))
     }
@@ -50,7 +50,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m))
     }
@@ -60,7 +60,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m))
     }
@@ -70,7 +70,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m))
     }
@@ -80,7 +80,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m))
     }
@@ -90,7 +90,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m))
     }
@@ -100,7 +100,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m))
     }
@@ -110,7 +110,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m))
     }
@@ -120,7 +120,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m))
     }
@@ -130,7 +130,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m))
     }
@@ -140,7 +140,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m))
     }
@@ -150,7 +150,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m))
     }
@@ -160,7 +160,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m))
     }
@@ -170,7 +170,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m), arg16(m))
     }
@@ -180,7 +180,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m), arg16(m), arg17(m))
     }
@@ -190,7 +190,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m), arg16(m), arg17(m), arg18(m))
     }
@@ -200,7 +200,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m), arg16(m), arg17(m), arg18(m), arg19(m))
     }
@@ -210,7 +210,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m), arg16(m), arg17(m), arg18(m), arg19(m), arg20(m))
     }
@@ -220,7 +220,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m), arg16(m), arg17(m), arg18(m), arg19(m), arg20(m), arg21(m))
     }
@@ -230,7 +230,7 @@ object Func {
 
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22)
 
-    def run(a: FunctionArgs): R = {
+    def run(a: FullConfig): R = {
       val m = a.args
       func(arg1(m), arg2(m), arg3(m), arg4(m), arg5(m), arg6(m), arg7(m), arg8(m), arg9(m), arg10(m), arg11(m), arg12(m), arg13(m), arg14(m), arg15(m), arg16(m), arg17(m), arg18(m), arg19(m), arg20(m), arg21(m), arg22(m))
     }
@@ -252,7 +252,7 @@ object Func {
       println()
       println("    override val args = " + r.map("arg" + _).mkString("List(", ", ", ")"))
       println()
-      println("    def run(a: FunctionArgs): R = {")
+      println("    def run(a: FullConfig): R = {")
       println("      val m = a.args")
       println("      func(" + r.map("arg" + _ + "(m)").mkString(", ") + ")")
       println("    }")

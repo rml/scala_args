@@ -21,7 +21,7 @@ case class IsoDates0(val key: String) extends ToIsoDate with List0Arg[Date]
 
 case class PIsoDate(val pos: Int) extends ToIsoDate with PositionalArg[Date]
 
-case class Today extends Arg[Date]{
+case class Today() extends Arg[Date]{
 
   val key = "[Today]"
   

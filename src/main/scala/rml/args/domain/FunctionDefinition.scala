@@ -2,8 +2,9 @@ package rml.args.domain
 
 import rml.args.arg.Arg
 import rml.args.argmapper._
-import rml.args.reader.ArgReader
+import rml.args.reader.ConfReader
 import rml.args.arg.DescriptionMethods
+import rml.args.exceptions.IllegalArgException
 
 trait FunctionDefinition[T] extends DescriptionMethods[FunctionDefinition[T]]{
 
@@ -11,38 +12,34 @@ trait FunctionDefinition[T] extends DescriptionMethods[FunctionDefinition[T]]{
   
   def getArg(argName: String) = args.find(_.key == argName)
     
-  def run(args: FunctionArgs): T
+  def run(args: FullConfig): T
   
-  def apply(args: FunctionArgs): T = run(checkLastArg(args))
+  def apply(config: FullConfig): T = run(findPositionalArgs(config))
 
-  def checkLastArg(args: FunctionArgs): FunctionArgs = {
-  
-    if(args.args.contains("-")) return args.copy(lastArg = "")
+  def findPositionalArgs(config: FullConfig): FullConfig = {
     
-    getArg(args.lastArg) match {
-      
-      case None => args.copy(lastArg = "")
-      
-      case Some(lastArg) => {
-        
-          val lastList = args.args(lastArg.key)
-          val trailing = lastArg.getUnused(lastList)
-        
-          if(trailing.isEmpty)
-            args.copy(lastArg = "")
-          else {
-            val leading = lastArg.getUsed(lastList)
-            val adjustedArgs = args.args + (lastArg.key -> leading, "-" -> trailing)
-            args.copy(lastArg = "", args = adjustedArgs)
-          }
-      }
+    if(config.cmdConfig.args.contains("-")) return config
+    
+    val trailingByArgKey = for{
+      arg <- args
+      trailing = arg.getUnused(config.args.getOrElse(arg.key, Nil)) if !trailing.isEmpty
+    } yield {
+      (arg.key, trailing)
     }
+
+    if(trailingByArgKey.isEmpty) return config
+    
+    if(trailingByArgKey.groupBy(_._1).size > 1) throw new IllegalArgException("too many trailing values")
+    
+    val trailing = trailingByArgKey.map{ case(k, v) => v }.sortBy(_.size).head
+    
+    config.adjustPositionalArgs(trailing)
   }
   
   def apply(args: Array[String], prefix: String = ""): T = {
-    val functionArgs = ArgReader(args, prefix)
-    val fa = if(functionArgs.args.contains("-")) functionArgs 
-             else functionArgs.copy(args = functionArgs.args + ("-" -> functionArgs.subfuncs), subfuncs = List())
-    apply(fa)
+    
+    val fullConfig = ConfReader(args, prefix)
+    // TODO adjust
+    apply(fullConfig)
   }
 }

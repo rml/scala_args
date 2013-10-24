@@ -1,12 +1,12 @@
 package rml.args.manager
 
 import rml.args.domain.FunctionDefinition
-import rml.args.domain.FunctionArgs
+import rml.args.domain.FullConfig
 import rml.args.domain.Func
 import rml.args.argdecorator.Opt
 import rml.args.conversions.strings.PString
 import rml.args.exceptions.IllegalArgException
-import rml.args.reader.ArgReader
+import rml.args.reader.ConfReader
 import rml.args.conversions.strings.PString
 import rml.args.arg.Flag
 import rml.args.conversions.strings.JString
@@ -92,7 +92,7 @@ object FunctionRegister {
   /**
    * Try to find a function that matches the FunctionArguments and run it
    */
-  def run(args: FunctionArgs): Any = {
+  def run(args: FullConfig): Any = {
 
     val fullKey = args.func :: args.subfuncs
     val partKey = getPartKey(fullKey) match {
@@ -101,10 +101,10 @@ object FunctionRegister {
     }
 
     // Arguments, that are not part of the function name are treated as positional arguments
-    def adjust(args: FunctionArgs) = if(fullKey == partKey) args else {
+    def adjust(args: FullConfig) = if(fullKey == partKey) args else {
       val (subfncs, posArgs) = args.subfuncs.splitAt(partKey.length - 1)
       if(args.args.contains("-")) throw new IllegalArgException("Too many subfunction arguments: " + subfncs)
-      args.copy(subfuncs = subfncs, args = args.args + ("-" -> posArgs))
+      args.copy(subfuncs = subfncs, cmdConfig = args.cmdConfig.copy(args = args.args + ("-" -> posArgs))) 
     }
     
     register(partKey)(adjust(args))
@@ -133,7 +133,7 @@ object FunctionRegister {
   /**
    * Convenience function
    */
-  def apply(args: FunctionArgs) = run(args)
+  def apply(args: FullConfig) = run(args)
 
 
 }
