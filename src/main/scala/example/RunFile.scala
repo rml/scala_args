@@ -5,8 +5,11 @@ import rml.args.conversions.files._
 import rml.args.domain.Func
 import rml.args.manager.FunctionRegister
 import scala.reflect.io.File
+import rml.args.manager.FunctionOrigin
 
 object RunFile {
+
+  implicit val origin = FunctionOrigin("RunFile")
 
   FunctionRegister("cat")             = Func(PFile(1)){ f => f.lines.foreach(println) }
   

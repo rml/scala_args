@@ -9,9 +9,13 @@ import rml.args.arg.MultiArg
 import rml.args.domain.FunctionDefinition
 import rml.args.conversions.strings.Strings0
 import rml.args.arg.Flag
+import rml.args.domain.FullConfig
+import rml.args.conversions.basic.ABoolean
 
 case class HelpFunctions(out: PrintStream = System.out) {
 
+  implicit val origin = FunctionOrigin("HelpFunctions")
+  
   /**
    * Print list of functions, that match the filter
    */
@@ -25,7 +29,7 @@ case class HelpFunctions(out: PrintStream = System.out) {
   /**
    * Print detailed information about one function (temporary solution)
    */
-  def printFunctionDescription(name: String, func: FunctionDefinition[_]) = {
+  def printFunctionDescription(name: String, func: FunctionDefinition[_], withOrigin: Boolean = false) = {
 
     val format = "%-" + (name.length + 5) + "s     %-10s %s\n"
     printf(format, name, func.description, "")
@@ -44,20 +48,41 @@ case class HelpFunctions(out: PrintStream = System.out) {
     for(arg <- func.args) {
       printArg(arg, "")
     }
+    
+    if(withOrigin){
+      println()
+      println("Origin: " + func.origin.origin)
+    }
   }
   
   /**
    * Print information about registered functions to the console
    */
-  def help = Func(Strings0("-"), Flag("list") ~ "l"){ (filter, list) =>
+  def help = Func(Strings0("-"), Flag("list") ~ "l", Flag("orig") ~ "origin"){ (filter, list, withOrigin) =>
 
     val functionRegistered = FunctionRegister.isRegistered(filter)
     
     if(list || !functionRegistered){
       printFunctionList(filter.mkString(" "))
     } else {
-      printFunctionDescription(filter.mkString(" "), FunctionRegister.get(filter))
+      printFunctionDescription(filter.mkString(" "), FunctionRegister.get(filter), withOrigin)
     }
- 
+  }
+  
+  def printFullConf(fullConfig: FullConfig) = {
+    
+    val allArgs = for{config <- fullConfig.allConfigs
+      (key, value) <- config.args
+    } yield {
+      (key, value, config.origin)
+    }
+    
+    for{(key, values) <- allArgs.groupBy(_._1)}{
+      println(key)
+      for((k, v, o) <- values){
+        println(v.mkString("  ", ", ", " (" + o + ")"))
+      }
+    }
+    
   }
 }

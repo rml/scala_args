@@ -4,8 +4,11 @@ import rml.args.domain.Func
 import rml.args.conversions.strings._
 import rml.args.argdecorator.Env
 import rml.args.domain./
+import rml.args.manager.FunctionOrigin
 
 object RunString {
+  
+  implicit val origin = FunctionOrigin("RunString")
   
   FunctionRegister("home")            = Func(Env(AString("HOME")) -- "User Dir"){println}
   FunctionRegister("foo"::"bar"::Nil) = / / "tralala" /

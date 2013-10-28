@@ -10,8 +10,11 @@ import rml.args.conversions.db.DbsFromFile
 import rml.args.conversions.files.Files
 import rml.args.conversions.strings.JString
 import rml.args.arg.MultiArg
+import rml.args.manager.FunctionOrigin
 
 object RunDiv {
+
+  implicit val origin = FunctionOrigin(getClass)
 
   val ma = MultiArg(AString("a") -- "aa", AString("b") -- "bb"){ _ + " " + _}
   

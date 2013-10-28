@@ -8,8 +8,9 @@ object DefaultRunner {
   def apply(args: Array[String], prefix: String): Unit = {
     
     try {
-      val functionArguments = ConfReader(args, prefix)
-      FunctionRegister.run(functionArguments)
+      val fullConfig = ConfReader(args, prefix)
+//      HelpFunctions().printFullConf(fullConfig)
+      FunctionRegister.run(fullConfig)
       System.exit(0)
     } catch {
       case iae: IllegalArgException => println(iae.getMessage); if(args.contains("-stack")) iae.printStackTrace()

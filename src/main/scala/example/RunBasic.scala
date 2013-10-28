@@ -22,8 +22,11 @@ import rml.args.conversions.basic.PInt
 import rml.args.conversions.basic.Doubles0
 import rml.args.argdecorator.Opt
 import rml.args.conversions.strings.PString
+import rml.args.manager.FunctionOrigin
 
 object RunBasic {
+  
+  implicit val origin = FunctionOrigin("RunBasic")
     
   FunctionRegister("sq")              = / / "Calculate square" /
                                         Func(AnInt("x") ~ "-" -> 10 -- "Number"

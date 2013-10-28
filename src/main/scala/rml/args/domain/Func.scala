@@ -1,14 +1,17 @@
 package rml.args.domain
 
 import rml.args.arg.Arg
+import rml.args.manager.FunctionOrigin
 
 /**
  * Factory for FunctionDefinitions
  */
 object Func {
 
-  def apply[R](func: => R) = new FunctionDefinition[R]{
+  def apply[R](func: => R)(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List()
     
     def run(a: FullConfig): R = {
@@ -16,8 +19,10 @@ object Func {
     }
   }
 
-  def apply[T1, R](arg1: Arg[T1])(func: Function1[T1, R]) = new FunctionDefinition[R]{
+  def apply[T1, R](arg1: Arg[T1])(func: Function1[T1, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1)
 
     def run(a: FullConfig): R = {
@@ -26,8 +31,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, R](arg1: Arg[T1], arg2: Arg[T2])(func: Function2[T1, T2, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, R](arg1: Arg[T1], arg2: Arg[T2])(func: Function2[T1, T2, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2)
 
     def run(a: FullConfig): R = {
@@ -36,8 +43,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3])(func: Function3[T1, T2, T3, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3])(func: Function3[T1, T2, T3, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3)
 
     def run(a: FullConfig): R = {
@@ -46,8 +55,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4])(func: Function4[T1, T2, T3, T4, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4])(func: Function4[T1, T2, T3, T4, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4)
 
     def run(a: FullConfig): R = {
@@ -56,8 +67,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5])(func: Function5[T1, T2, T3, T4, T5, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5])(func: Function5[T1, T2, T3, T4, T5, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5)
 
     def run(a: FullConfig): R = {
@@ -66,8 +79,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6])(func: Function6[T1, T2, T3, T4, T5, T6, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6])(func: Function6[T1, T2, T3, T4, T5, T6, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6)
 
     def run(a: FullConfig): R = {
@@ -76,8 +91,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7])(func: Function7[T1, T2, T3, T4, T5, T6, T7, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7])(func: Function7[T1, T2, T3, T4, T5, T6, T7, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
     def run(a: FullConfig): R = {
@@ -86,8 +103,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8])(func: Function8[T1, T2, T3, T4, T5, T6, T7, T8, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8])(func: Function8[T1, T2, T3, T4, T5, T6, T7, T8, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 
     def run(a: FullConfig): R = {
@@ -96,8 +115,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9])(func: Function9[T1, T2, T3, T4, T5, T6, T7, T8, T9, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9])(func: Function9[T1, T2, T3, T4, T5, T6, T7, T8, T9, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 
     def run(a: FullConfig): R = {
@@ -106,8 +127,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10])(func: Function10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10])(func: Function10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 
     def run(a: FullConfig): R = {
@@ -116,8 +139,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11])(func: Function11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11])(func: Function11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
 
     def run(a: FullConfig): R = {
@@ -126,8 +151,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12])(func: Function12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12])(func: Function12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
 
     def run(a: FullConfig): R = {
@@ -136,8 +163,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13])(func: Function13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13])(func: Function13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13)
 
     def run(a: FullConfig): R = {
@@ -146,8 +175,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14])(func: Function14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14])(func: Function14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 
     def run(a: FullConfig): R = {
@@ -156,8 +187,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15])(func: Function15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15])(func: Function15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)
 
     def run(a: FullConfig): R = {
@@ -166,8 +199,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16])(func: Function16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16])(func: Function16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16)
 
     def run(a: FullConfig): R = {
@@ -176,8 +211,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17])(func: Function17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17])(func: Function17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 
     def run(a: FullConfig): R = {
@@ -186,8 +223,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18])(func: Function18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18])(func: Function18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18)
 
     def run(a: FullConfig): R = {
@@ -196,8 +235,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19])(func: Function19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19])(func: Function19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19)
 
     def run(a: FullConfig): R = {
@@ -206,8 +247,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19], arg20: Arg[T20])(func: Function20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19], arg20: Arg[T20])(func: Function20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20)
 
     def run(a: FullConfig): R = {
@@ -216,8 +259,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19], arg20: Arg[T20], arg21: Arg[T21])(func: Function21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19], arg20: Arg[T20], arg21: Arg[T21])(func: Function21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21)
 
     def run(a: FullConfig): R = {
@@ -226,8 +271,10 @@ object Func {
     }
   }
 
-  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19], arg20: Arg[T20], arg21: Arg[T21], arg22: Arg[T22])(func: Function22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, R]) = new FunctionDefinition[R]{
+  def apply[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, R](arg1: Arg[T1], arg2: Arg[T2], arg3: Arg[T3], arg4: Arg[T4], arg5: Arg[T5], arg6: Arg[T6], arg7: Arg[T7], arg8: Arg[T8], arg9: Arg[T9], arg10: Arg[T10], arg11: Arg[T11], arg12: Arg[T12], arg13: Arg[T13], arg14: Arg[T14], arg15: Arg[T15], arg16: Arg[T16], arg17: Arg[T17], arg18: Arg[T18], arg19: Arg[T19], arg20: Arg[T20], arg21: Arg[T21], arg22: Arg[T22])(func: Function22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, R])(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{
 
+    val origin = orig
+    
     override val args = List(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22)
 
     def run(a: FullConfig): R = {
@@ -248,7 +295,9 @@ object Func {
       val functype = if(r.isEmpty) "[R]" else r.map("T" + _).mkString("[", ", ", ", R]")
       print("  def apply" + functype)
       print("(" + r.map(i => "arg" + i + ": Arg[T" + i + "]").mkString(", ") + ")")
-      println("(func: Function" + n + functype + ") = new FunctionDefinition[R]{")
+      println("(func: Function" + n + functype + ")(implicit orig: FunctionOrigin) = new FunctionDefinition[R]{")
+      println()
+      println("    val origin = orig")
       println()
       println("    override val args = " + r.map("arg" + _).mkString("List(", ", ", ")"))
       println()

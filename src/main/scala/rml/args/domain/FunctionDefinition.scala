@@ -5,9 +5,12 @@ import rml.args.argmapper._
 import rml.args.reader.ConfReader
 import rml.args.arg.DescriptionMethods
 import rml.args.exceptions.IllegalArgException
+import rml.args.manager.FunctionOrigin
 
 trait FunctionDefinition[T] extends DescriptionMethods[FunctionDefinition[T]]{
 
+  val origin: FunctionOrigin
+  
   val args = List[Arg[_]]()
   
   def getArg(argName: String) = args.find(_.key == argName)

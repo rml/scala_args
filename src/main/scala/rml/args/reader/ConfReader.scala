@@ -8,13 +8,13 @@ import rml.args.domain.FullConfig
 
 object ConfReader {
 
-  def apply(args: Array[String], prefix: String): FullConfig = {
+  def apply(args: Array[String], prefix: String, conf: String = "conf"): FullConfig = {
 
     val cmdArgs: FunctionArgs = readCommandLineArgs(args)
 	val envArgs: Map[String, List[String]] = if(prefix.isEmpty) Map() else readEnvironmentVars(prefix)
 
 	val configFilePaths: List[File] = getConfigFiles(
-                cmdArgs.args.get("conf"), envArgs.get("conf"), defaultConfFilePaths(prefix))
+                cmdArgs.args.get(conf), envArgs.get(conf), defaultConfFilePaths(prefix))
 	    
     val fileArgs: List[Config] = if(configFilePaths.isEmpty) Nil
     										  else configFilePaths.map(f => Config(parseConfigFile(f), f.path))
