@@ -24,6 +24,8 @@ object FunctionRegister {
    * Function definitions are stored in this mutable map
    */
   private val register = scala.collection.mutable.Map[List[String], FunctionDefinition[_]]()
+  
+  def commands: List[String] = register.keySet.map(_.mkString(" ")).toList.sorted
 
   def list(filter: String): List[(String, FunctionDefinition[_])] = register.filter{case(k, v) => k.mkString(" ") contains filter}.map{case(k, v) => (k.mkString(" "), v)}.toList.sortBy(_._1)
 
