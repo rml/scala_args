@@ -31,4 +31,6 @@ scalacOptions += "-deprecation"
 
 mainClass in (Compile, run) := Some("example.Run")
 
+mainClass in Runtime := Some("example.Run")
+
 mainClass in (Compile, packageBin) := Some("example.Run")

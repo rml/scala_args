@@ -38,7 +38,7 @@ object DefaultSetup {
           var line = console.readLine()
           while (line != null) {
             console.println(line)
-            DefaultRunner(line.split("""\s+|-"""), prefix)
+            DefaultRunner(line.split("""\s+|(?<! )-"""), prefix)
             line = console.readLine()
           }          
         } finally {
