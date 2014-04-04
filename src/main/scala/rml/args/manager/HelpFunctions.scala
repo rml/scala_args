@@ -1,16 +1,15 @@
 package rml.args.manager
 
-import rml.args.domain.Func
+import java.io.PrintStream
+
+import rml.args.arg.Arg
+import rml.args.arg.Flag
 import rml.args.argdecorator.Opt
 import rml.args.argmapper.PositionalArg
-import rml.args.arg.Arg
-import java.io.PrintStream
-import rml.args.arg.MultiArg
-import rml.args.domain.Function
 import rml.args.conversions.strings.Strings0
-import rml.args.arg.Flag
 import rml.args.domain.FullConfig
-import rml.args.conversions.basic.ABoolean
+import rml.args.domain.Func
+import rml.args.domain.Function
 
 case class HelpFunctions(out: PrintStream = System.out) {
 
@@ -38,7 +37,7 @@ case class HelpFunctions(out: PrintStream = System.out) {
       val suffix = arg match {
         case parg: PositionalArg[_] => " (" + parg.pos + ")"
         case Opt(parg: PositionalArg[_]) => " (" + parg.pos + ")"
-        case marg: MultiArg[_] => return for(a <- marg.args){ printArg(a, "") }
+        case marg: Function[_] => return for(a <- marg.args){ printArg(a, "") }
         case _ => ""
       }
 

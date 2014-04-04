@@ -12,7 +12,6 @@ import rml.args.arg.Flag
 import rml.args.conversions.strings.JString
 import rml.args.argmapper.PositionalArg
 import rml.args.arg.Arg
-import rml.args.arg.MultiArg
 import rml.args.exceptions.FunctionNotFoundException
 
 /**
