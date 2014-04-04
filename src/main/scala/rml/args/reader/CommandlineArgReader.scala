@@ -36,7 +36,7 @@ object CommandlineArgReader extends RegexParsers {
   
   private def arguments: Parser[List[Tuple2[String, List[String]]]] = rep(argument)
   
-  private def command: Parser[FunctionArgs] = functionName~rep(functionName)~arguments ^^ {
+  private def command: Parser[FunctionArgs] = functionName~rep(functionName)~arguments ^^ {	
     case func~subfuncs~args => FunctionArgs(func, subfuncs, args.toMap, if(args.isEmpty) "" else args.last._1)
   }
   
@@ -53,6 +53,8 @@ object CommandlineArgReader extends RegexParsers {
   
   
   def apply(args: Array[String]): FunctionArgs = parse(args)
+
+  def apply(args: String): FunctionArgs = parse(args)
 
   def parse(args: Array[String]): FunctionArgs = {
 
@@ -75,12 +77,27 @@ object CommandlineArgReader extends RegexParsers {
     FunctionArgs(mainfunc, subfuncs, arguments.toMap, lastArg)
   }
   
-  def parse(cmd: String): FunctionArgs = if(cmd.isEmpty) FunctionArgs("", Nil, Map(), "")
-                                         else if (cmd.charAt(0) == '-'){
-                                           val args = parse(cmd, arguments)
-                                           FunctionArgs("", Nil, args.toMap, args.last._1)
-                                         }
-                                         else parse(cmd, command)
+  def parse(cmd: String): FunctionArgs = {
+
+    if(cmd.endsWith("-")){
+      val functionArgs = parse(cmd.substring(0, cmd.length - 1))
+      return functionArgs.copy(trailingDash = true)
+    }
+    
+    if(cmd.isEmpty){
+      
+      FunctionArgs("", Nil, Map(), "")
+      
+    } else if (cmd.charAt(0) == '-'){
+      
+      val args = parse(cmd, arguments)
+      FunctionArgs("", Nil, args.toMap, args.last._1)
+      
+    } else {
+      
+      parse(cmd, command)
+    }
+  }
 
   def parseArgument(par: String): Tuple2[String, List[String]] = parse(par, argument)
 

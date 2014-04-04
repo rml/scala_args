@@ -8,9 +8,18 @@ import rml.args.domain.FullConfig
 
 object ConfReader {
 
-  def apply(args: Array[String], prefix: String, conf: String = "conf"): FullConfig = {
+  def apply(args: Array[String], prefix: String, conf: String): FullConfig = {
+    
+    apply(readCommandLineArgs(args), prefix, conf)
+  }
 
-    val cmdArgs: FunctionArgs = readCommandLineArgs(args)
+  def apply(args: String, prefix: String, conf: String): FullConfig = {
+    
+    apply(readCommandLineArgs(args), prefix, conf)
+  }
+
+  def apply(cmdArgs: FunctionArgs, prefix: String, conf: String): FullConfig = {
+
 	val envArgs: Map[String, List[String]] = if(prefix.isEmpty) Map() else readEnvironmentVars(prefix)
 
 	val configFilePaths: List[File] = getConfigFiles(
@@ -24,6 +33,8 @@ object ConfReader {
   }
   
   def readCommandLineArgs(args: Array[String]): FunctionArgs = CommandlineArgReader(args)
+  
+  def readCommandLineArgs(args: String): FunctionArgs = CommandlineArgReader(args)
   
   def readEnvironmentVars(prefix: String): Map[String, List[String]] = EnvironmentArgReader.prefix(prefix)
 

@@ -41,7 +41,7 @@ trait FunctionDefinition[T] extends DescriptionMethods[FunctionDefinition[T]]{
   
   def apply(args: Array[String], prefix: String = ""): T = {
     
-    val fullConfig = ConfReader(args, prefix)
+    val fullConfig = ConfReader(args, prefix, "conf")
     // TODO adjust
     apply(fullConfig)
   }
