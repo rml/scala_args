@@ -1,23 +1,22 @@
 package rml.args.domain
 
 import rml.args.arg.Arg
-import rml.args.argmapper._
-import rml.args.reader.ConfReader
 import rml.args.arg.DescriptionMethods
 import rml.args.exceptions.IllegalArgException
+import rml.args.reader.ConfReader
 import rml.args.manager.FunctionOrigin
 
-trait FunctionDefinition[T] extends DescriptionMethods[FunctionDefinition[T]]{
-
+trait Function[T] extends Arg[T] with DescriptionMethods[Function[T]]{
+  
   val origin: FunctionOrigin
   
+  val key: String = "Function"
+        
   val args = List[Arg[_]]()
   
-  def getArg(argName: String) = args.find(_.key == argName)
-    
-  def run(args: FullConfig): T
-  
-  def apply(config: FullConfig): T = run(findPositionalArgs(config))
+  def getArg(argName: String): Option[Arg[_]] = args.find(_.key == argName)
+
+  def noInformationMissing(argMap: Map[String, List[String]]): Boolean = args.forall(_.noInformationMissing(argMap))
 
   def findPositionalArgs(config: FullConfig): FullConfig = {
     
@@ -38,6 +37,8 @@ trait FunctionDefinition[T] extends DescriptionMethods[FunctionDefinition[T]]{
     
     config.adjustPositionalArgs(trailing)
   }
+  
+  def apply(config: FullConfig): T = apply(findPositionalArgs(config))
   
   def apply(args: Array[String], prefix: String = ""): T = {
     

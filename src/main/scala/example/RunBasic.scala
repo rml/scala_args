@@ -1,28 +1,23 @@
 package example
 
-import rml.args.manager.FunctionRegister
-import rml.args.domain.Func
-import rml.args.conversions.basic._
-import rml.args.arg._
-import rml.args.argdecorator.WithAlias
-import rml.args.domain.FunctionDefinition
-import rml.args.domain./
-import rml.args.argdecorator.Env
-import rml.args.argdecorator.WithFlagAlias
-import rml.args.conversions.basic.Floats0
-import rml.args.conversions.basic.Booleans0
-import rml.args.conversions.basic.Longs0
-import rml.args.conversions.basic.Ints0
-import rml.args.conversions.basic.BigDecimals0
-import rml.args.conversions.basic.AnInt
-import rml.args.conversions.basic.Bytes0
-import rml.args.conversions.basic.AFloat
-import rml.args.conversions.basic.Shorts0
-import rml.args.conversions.basic.PInt
-import rml.args.conversions.basic.Doubles0
+import rml.args.arg.Flag
 import rml.args.argdecorator.Opt
+import rml.args.conversions.basic.AFloat
+import rml.args.conversions.basic.AnInt
+import rml.args.conversions.basic.BigDecimals0
+import rml.args.conversions.basic.Booleans0
+import rml.args.conversions.basic.Bytes0
+import rml.args.conversions.basic.Doubles0
+import rml.args.conversions.basic.Floats0
+import rml.args.conversions.basic.Ints0
+import rml.args.conversions.basic.Longs0
+import rml.args.conversions.basic.PInt
+import rml.args.conversions.basic.Shorts0
 import rml.args.conversions.strings.PString
+import rml.args.domain.{/ => /}
+import rml.args.domain.Func
 import rml.args.manager.FunctionOrigin
+import rml.args.manager.FunctionRegister
 
 object RunBasic {
   

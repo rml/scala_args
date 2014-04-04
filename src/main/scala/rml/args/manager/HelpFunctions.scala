@@ -6,7 +6,7 @@ import rml.args.argmapper.PositionalArg
 import rml.args.arg.Arg
 import java.io.PrintStream
 import rml.args.arg.MultiArg
-import rml.args.domain.FunctionDefinition
+import rml.args.domain.Function
 import rml.args.conversions.strings.Strings0
 import rml.args.arg.Flag
 import rml.args.domain.FullConfig
@@ -29,7 +29,7 @@ case class HelpFunctions(out: PrintStream = System.out) {
   /**
    * Print detailed information about one function (temporary solution)
    */
-  def printFunctionDescription(name: String, func: FunctionDefinition[_], withOrigin: Boolean = false) = {
+  def printFunctionDescription(name: String, func: Function[_], withOrigin: Boolean = false) = {
 
     val format = "%-" + (name.length + 5) + "s     %-10s %s\n"
     printf(format, name, func.description, "")

@@ -1,6 +1,6 @@
 package rml.args.manager
 
-import rml.args.domain.FunctionDefinition
+import rml.args.domain.Function
 import rml.args.domain.FullConfig
 import rml.args.domain.Func
 import rml.args.argdecorator.Opt
@@ -23,16 +23,16 @@ object FunctionRegister {
   /**
    * Function definitions are stored in this mutable map
    */
-  private val register = scala.collection.mutable.Map[List[String], FunctionDefinition[_]]()
+  private val register = scala.collection.mutable.Map[List[String], Function[_]]()
   
   def commands(sep: String = " "): List[String] = register.keySet.map(_.mkString(sep)).toList.sorted
 
-  def list(filter: String): List[(String, FunctionDefinition[_])] = register.filter{case(k, v) => k.mkString(" ") contains filter}.map{case(k, v) => (k.mkString(" "), v)}.toList.sortBy(_._1)
+  def list(filter: String): List[(String, Function[_])] = register.filter{case(k, v) => k.mkString(" ") contains filter}.map{case(k, v) => (k.mkString(" "), v)}.toList.sortBy(_._1)
 
   /**
    * Register a new function
    */
-  def set(key: List[String], fdef: FunctionDefinition[_]): Unit = {
+  def set(key: List[String], fdef: Function[_]): Unit = {
     if(register.contains(key))
       throw new IllegalStateException("Function for key " + key.mkString("[", "][", "]") + " already registered. (" + fdef + ")")
     register.put(key, fdef)
@@ -42,13 +42,13 @@ object FunctionRegister {
    * Remove a function from the register
    * Returns the function if it was previously registered, otherwise None
    */
-  def remove(key: List[String]): Option[FunctionDefinition[_]] = register.remove(key)
+  def remove(key: List[String]): Option[Function[_]] = register.remove(key)
 
   /**
    * Replace a function with a new one
    * Returns the old function if it was previously registered, otherwise None
    */
-  def replace(key: List[String], fdef: FunctionDefinition[_]): Option[FunctionDefinition[_]] = {
+  def replace(key: List[String], fdef: Function[_]): Option[Function[_]] = {
     val old = remove(key)
     set(key, fdef)
     old
@@ -57,7 +57,7 @@ object FunctionRegister {
   /**
    * Returns the function definition, that best matches the key.
    */
-  def get(key: List[String]): FunctionDefinition[_] = {
+  def get(key: List[String]): Function[_] = {
     
     getPartKey(key) match {
       case Some(k) => register(k)
@@ -84,7 +84,7 @@ object FunctionRegister {
   /**
    * Tries to find an exact match for the key and returns the respective function definition, if one exists.
    */
-  def getOption(key: List[String]): Option[FunctionDefinition[_]] = register.get(key)
+  def getOption(key: List[String]): Option[Function[_]] = register.get(key)
 
   /**
    * Checks, whether the key is registered
@@ -109,7 +109,7 @@ object FunctionRegister {
       args.copy(subfuncs = subfncs, cmdConfig = args.cmdConfig.copy(args = args.args + ("-" -> posArgs))) 
     }
     
-    register(partKey)(adjust(args))
+    register(partKey)(adjust(args).args)
   }
 
   /**
@@ -125,12 +125,12 @@ object FunctionRegister {
   /**
    * Convenience function
    */
-  def update(key: List[String], fdef: FunctionDefinition[_]) = set(key, fdef)
+  def update(key: List[String], fdef: Function[_]) = set(key, fdef)
   
   /**
    * Convenience function
    */
-  def update(key: String, fdef: FunctionDefinition[_]) = set(key :: Nil, fdef)
+  def update(key: String, fdef: Function[_]) = set(key :: Nil, fdef)
   
   /**
    * Convenience function
