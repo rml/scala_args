@@ -1,15 +1,20 @@
 package rml.args.conversions.map
 
-import rml.args.argmapper.PositionalArg
-import rml.args.argmapper.SingleArg
 import rml.args.argmapper.List0Arg
 import rml.args.argmapper.ListArg
+import rml.args.argmapper.PositionalArg
+import rml.args.argmapper.SingleArg
+import rml.args.exceptions.IllegalArgException
 
 trait ToEnum[E <: Enumeration] {
     
   val enum: E
   val key: String
-  def mapToType(value: String): E#Value = enum.withName(value)
+  def mapToType(value: String): E#Value = try {
+    enum.withName(value)
+  } catch {
+    case nsee: NoSuchElementException => throw new IllegalArgException(key, value, (0 until enum.maxId).toList.map(enum(_).toString))
+  }
   
   override def toString = enum.values.mkString("[", ", ", "]")
 }
