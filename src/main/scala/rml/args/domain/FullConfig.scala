@@ -26,7 +26,7 @@ case class FullConfig(
   def posArg(pos: Int): String = if(pos < posArgs.length) posArgs(pos) else ""
 
   // args
-  val args: Map[String, List[String]] = allConfigs.map(_.args).reduce(_ ++ _)
+  val args: Map[String, List[String]] = allConfigs.reverse.map(_.args).reduce(_ ++ _)
   
   def isArg(key: String): Boolean = args.contains(key)
   
