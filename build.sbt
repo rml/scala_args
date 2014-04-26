@@ -29,6 +29,8 @@ libraryDependencies += "jline" % "jline" % "2.11"
 
 scalacOptions += "-deprecation"
 
+scalacOptions += "-feature"
+
 mainClass in (Compile, run) := Some("example.Run")
 
 mainClass in Runtime := Some("example.Run")

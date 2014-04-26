@@ -13,12 +13,15 @@ import rml.args.conversions.strings.JString
 import rml.args.argmapper.PositionalArg
 import rml.args.arg.Arg
 import rml.args.exceptions.FunctionNotFoundException
+import com.typesafe.scalalogging.slf4j.Logging
 
 /**
  * Central register for function definitions
  */
-object FunctionRegister {
+object FunctionRegister extends Logging {
 
+  import logger._
+  
   /**
    * Function definitions are stored in this mutable map
    */
@@ -58,7 +61,7 @@ object FunctionRegister {
    */
   def get(key: List[String]): Function[_] = {
     
-    getPartKey(key) match {
+    findLongestMatching(key) match {
       case Some(k) => register(k)
       case None => throw new IllegalArgException
     }
@@ -68,7 +71,7 @@ object FunctionRegister {
    * Finds the longest registered key, that is fully included in the searched key.
    * Comparison always starts from the root, never in the middle of the key.
    */
-  def getPartKey(key: List[String]): Option[List[String]] = {
+  def findLongestMatching(key: List[String]): Option[List[String]] = {
 
     for(i <- key.length.to(1, -1) ){
 
@@ -91,27 +94,6 @@ object FunctionRegister {
   def isRegistered(key: List[String]): Boolean = register.contains(key)
   
   /**
-   * Try to find a function that matches the FunctionArguments and run it
-   */
-  def run(args: FullConfig): Any = {
-
-    val fullKey = args.func :: args.subfuncs
-    val partKey = getPartKey(fullKey) match {
-      case Some(k) => k
-      case None => throw new FunctionNotFoundException(fullKey)
-    }
-
-    // Arguments, that are not part of the function name are treated as positional arguments
-    def adjust(args: FullConfig) = if(fullKey == partKey) args else {
-      val (subfncs, posArgs) = args.subfuncs.splitAt(partKey.length - 1)
-      if(args.args.contains("-")) throw new IllegalArgException("Too many subfunction arguments: " + subfncs)
-      args.copy(subfuncs = subfncs, cmdConfig = args.cmdConfig.copy(args = args.args + ("-" -> posArgs))) 
-    }
-    
-    register(partKey)(adjust(args).args)
-  }
-
-  /**
    * Convenience function
    */
   def apply(key: List[String]) = get(key)
@@ -131,10 +113,4 @@ object FunctionRegister {
    */
   def update(key: String, fdef: Function[_]) = set(key :: Nil, fdef)
   
-  /**
-   * Convenience function
-   */
-  def apply(args: FullConfig) = run(args)
-
-
 }

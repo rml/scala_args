@@ -5,45 +5,22 @@ import rml.args.arg.DescriptionMethods
 import rml.args.exceptions.IllegalArgException
 import rml.args.reader.ConfReader
 import rml.args.manager.FunctionOrigin
+import rml.args.arg.InputArg
+import rml.args.arg.InputArg
+import rml.args.arg.DependentArg
 
-trait Function[T] extends Arg[T] with DescriptionMethods[Function[T]]{
+trait Function[T] extends DependentArg[T] with DescriptionMethods[Function[T]]{
   
   val origin: FunctionOrigin
   
-  val key: String = "Function"
-        
   val args = List[Arg[_]]()
   
-  def getArg(argName: String): Option[Arg[_]] = args.find(_.key == argName)
+  def inputArg: Map[String, InputArg[_]] = inputArgs.map(a => a.key -> a).toMap
 
-  def noInformationMissing(argMap: Map[String, List[String]]): Boolean = args.forall(_.noInformationMissing(argMap))
+  def inputArgOption(key: String): Option[InputArg[_]] = inputArg.get(key)
 
-  def findPositionalArgs(config: FullConfig): FullConfig = {
-    
-    if(config.cmdConfig.args.contains("-")) return config
-    
-    val trailingByArgKey = for{
-      arg <- args
-      trailing = arg.getUnused(config.args.getOrElse(arg.key, Nil)) if !trailing.isEmpty
-    } yield {
-      (arg.key, trailing)
-    }
-
-    if(trailingByArgKey.isEmpty) return config
-    
-    if(trailingByArgKey.groupBy(_._1).size > 1) throw new IllegalArgException("too many trailing values")
-    
-    val trailing = trailingByArgKey.map{ case(k, v) => v }.sortBy(_.size).head
-    
-    config.adjustPositionalArgs(trailing)
-  }
+  def keys: Set[String] = inputArgs.map(_.key)
   
-  def apply(config: FullConfig): T = apply(findPositionalArgs(config))
+  def apply(config: FullConfig): T
   
-  def apply(args: Array[String], prefix: String = ""): T = {
-    
-    val fullConfig = ConfReader(args, prefix, "conf")
-    // TODO adjust
-    apply(fullConfig)
-  }
 }

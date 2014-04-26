@@ -1,21 +1,22 @@
 package rml.args.argdecorator
 
-import scala.collection.immutable.Map
-import rml.args.arg.Arg
 import rml.args.arg.DescriptionMethods
+import rml.args.arg.InputArg
+import rml.args.domain.FullConfig
 
-trait ArgDelegator[+T] extends Arg[T] with DescriptionMethods[ArgDelegator[T]] {
+trait ArgDelegator[+T] extends InputArg[T] with DescriptionMethods[ArgDelegator[T]] {
 
-  val arg: Arg[T]
+  val arg: InputArg[T]
   			
   override val key: String = arg.key
   
-  override def noInformationMissing(argMap: Map[String, List[String]]): Boolean = arg.noInformationMissing(argMap)
+  override def noInformationMissing(config: FullConfig): Boolean = arg.noInformationMissing(config)
 
   override def getUnused(argList: List[String]): List[String] = arg.getUnused(argList)
   
   override def getUsed(argList: List[String]): List[String] = arg.getUsed(argList)
   
-  override def apply(argMap: Map[String, List[String]]): T = arg.apply(argMap)
-  
+  override def apply(config: FullConfig): T = arg.apply(config)
+
+  override def mapListToType(stringArgs: List[String]): T = arg.mapListToType(stringArgs)
 }

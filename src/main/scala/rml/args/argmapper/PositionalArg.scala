@@ -1,5 +1,6 @@
 package rml.args.argmapper
 import rml.args.exceptions.IllegalArgException
+import rml.args.domain.FullConfig
 
 /**
  * Positional arguments have no names, they are accessed by position.
@@ -19,7 +20,7 @@ trait PositionalArg[T] extends ArgMapper[T] {
    */
   val key = "-"
 
-  override def noInformationMissing(argMap: Map[String, List[String]]) = argMap.contains(key) && argMap(key).length >= pos  
+  override def noInformationMissing(config: FullConfig) = config.isArg(key) && config.arg(key).length >= pos  
     
   override def mapListToType(argList: List[String]): T = {
     val argArray = argList.toArray

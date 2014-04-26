@@ -4,21 +4,23 @@ import rml.args.arg.Arg
 import rml.args.reader.CommandlineArgReader
 import scala.collection.immutable.TreeMap
 import rml.args.exceptions.IllegalArgException
+import rml.args.domain.FullConfig
+import rml.args.arg.InputArg
 
 /**
  * Reads an argument from an environment variable. This is usually used to read
  * general arguments like HOME etc.
  * Type information is taken from the wrapped argument.
  */
-case class Env[T](arg: Arg[T]) extends ArgDelegator[T] {
+case class Env[T](arg: InputArg[T]) extends ArgDelegator[T] {
   
   override def showdesc: String = "Env: $" + key + "=" + System.getenv(key)
   
-  override def noInformationMissing(argMap: Map[String, List[String]]) = System.getenv(key) != null
+  override def noInformationMissing(config: FullConfig) = System.getenv(key) != null
 
-  override def apply(argMap: Map[String, List[String]]): T = if(noInformationMissing(argMap)){
+  override def apply(config: FullConfig): T = if(noInformationMissing(config)){
     
-    arg.apply(Map(arg.key -> CommandlineArgReader.parseArgumentValues(System.getenv(key))))
+    arg.apply(config.over(arg.key, CommandlineArgReader.parseArgumentValues(System.getenv(key))))
     
   } else {
     

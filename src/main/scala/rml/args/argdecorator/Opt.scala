@@ -1,13 +1,26 @@
 package rml.args.argdecorator
 
 import rml.args.arg.Arg
+import rml.args.domain.FullConfig
+import rml.args.arg.InputArg
+import rml.args.arg.DependentArg
 
 /**
  * Wrapper, that makes an argument optional
  */
-case class Opt[O](arg: Arg[O]) extends Arg[Option[O]] {
+class Opt[O](arg: Arg[O]) extends DependentArg[Option[O]] {
 
-  override def desc(text: String): Arg[Option[O]] = {
+  val args = arg :: Nil
+  
+  override def noInformationMissing(config: FullConfig) = true
+
+  override def apply(config: FullConfig): Option[O] = 
+    if(arg.noInformationMissing(config)) Some(arg.apply(config)) else None
+}
+
+class InputOpt[O](arg: InputArg[O]) extends InputArg[Option[O]] {
+
+  override def desc(text: String): InputArg[Option[O]] = {
     arg.desc(text)
     this
   }
@@ -22,8 +35,18 @@ case class Opt[O](arg: Arg[O]) extends Arg[Option[O]] {
 
   override val key = arg.key
 
-  override def noInformationMissing(argMap: Map[String, List[String]]) = true
+  override def noInformationMissing(config: FullConfig) = true
 
-  override def apply(argMap: Map[String, List[String]]): Option[O] = 
-    if(arg.noInformationMissing(argMap)) Some(arg.apply(argMap)) else None
+  override def apply(config: FullConfig): Option[O] = 
+    if(arg.noInformationMissing(config)) Some(arg.apply(config)) else None
+    
+  def mapListToType(stringArgs: List[String]): Option[O] = Some(arg.mapListToType(stringArgs))    
+}
+
+object Opt {
+  
+  def apply[O](arg: Arg[O]): Arg[Option[O]] = new Opt(arg)
+  
+  def apply[O](arg: InputArg[O]): InputArg[Option[O]] = new InputOpt(arg)
+  
 }

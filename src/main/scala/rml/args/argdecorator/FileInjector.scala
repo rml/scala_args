@@ -1,13 +1,15 @@
 package rml.args.argdecorator
 
-import rml.args.arg.Arg
+import rml.args.arg.InputArg
 import rml.args.conversions.files.Files
 import rml.args.arginjector.ListInjector
 import rml.args.arginjector.DataFromCsv
 import rml.args.arginjector.SingleInjector
+import rml.args.arg.DependentArg
 
 case class FileInjector[T](
-    override val arg: Arg[T], 
+    override val arg: DependentArg[T], 
     files: Files, 
-    ref: String
-) extends SingleInjector(arg, ref) with DataFromCsv
+    override val valueArg: InputArg[String],
+    override val key: Option[String] = None
+) extends SingleInjector(arg, valueArg, key) with DataFromCsv

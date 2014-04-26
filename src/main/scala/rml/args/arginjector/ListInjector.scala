@@ -6,13 +6,19 @@ import scala.collection.immutable.TreeMap
 import rml.args.exceptions.IllegalArgException
 import rml.args.argmapper.ArgMapper
 import rml.args.argdecorator.ArgDelegator
+import rml.args.domain.FullConfig
+import rml.args.arg.DependentArg
+import rml.args.arg.InputArg
 
-abstract class ListInjector[T](arg: Arg[T], key: String) extends Arg[List[T]] with Injector {
+abstract class ListInjector[T](arg: DependentArg[T], val valueArg: InputArg[List[String]], val key: Option[String] = None) extends Arg[List[T]] with Injector with DependentArg[List[T]] {
 
-  override val showdesc: String = arg.showdesc
+  val args = List(arg, valueArg)
+  
+  override def inputArgs(): Set[InputArg[_]] = Set(valueArg)
+  
+  override def noInformationMissing(config: FullConfig) = valueArg.noInformationMissing(config)
 
-  override def noInformationMissing(argMap: Map[String, List[String]]) = argMap.contains(key)
-
-  override def apply(argMap: Map[String, List[String]]): List[T] = 
-    argMap(key).map(k => arg(inject(argMap, Map(key -> k))) )
+  override def apply(config: FullConfig): List[T] = 
+    valueArg(config).map(k => arg(inject(config, Map(key.getOrElse(valueArg.key) -> k))) )
+  
 }

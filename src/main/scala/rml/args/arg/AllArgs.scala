@@ -1,11 +1,13 @@
 package rml.args.arg
 
-case class AllArgs() extends Arg[Map[String, List[String]]] {
+import rml.args.domain.FullConfig
 
-  val key = "[all]"
+case class AllArgs() extends DependentArg[FullConfig] {
   
-  override def noInformationMissing(argMap: Map[String, List[String]]) = true
+  val args = Nil
 
-  override def apply(argMap: Map[String, List[String]]) = argMap
+  override def noInformationMissing(config: FullConfig) = true
+
+  override def apply(config: FullConfig) = config
 
 }

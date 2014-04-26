@@ -27,7 +27,7 @@ object JLineConsole {
       val completers = for{cmd <- FunctionRegister.commands("_")
         functionDefinition = FunctionRegister(cmd.split("_").toList)
       } yield {
-        new ArgumentCompleter(new StringsCompleter(cmd), new StringsCompleter(functionDefinition.args.map("-" + _.key)))
+        new ArgumentCompleter(new StringsCompleter(cmd), new StringsCompleter(functionDefinition.args.flatMap(_.inputArgs).map("-" + _.key)))
       }
       
       val console = new ConsoleReader()

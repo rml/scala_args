@@ -1,6 +1,8 @@
 package rml.args.domain
 
 import rml.args.exceptions.IllegalArgException
+import java.text.SimpleDateFormat
+import java.util.Date
 
 case class FullConfig(
     cmdConfig: Config,
@@ -8,6 +10,14 @@ case class FullConfig(
     func: String, 
     subfuncs: List[String]  
 ) {
+
+  def over(key: String, vals: List[String]): FullConfig = over(Map(key -> vals))
+    
+  def over(args: Map[String, List[String]]): FullConfig = over(Config(args, new SimpleDateFormat("yyyy-MM-dd_HH:mm").format(new Date())))
+  
+  def over(config: Config): FullConfig = FullConfig(cmdConfig, config :: configs, func, subfuncs)
+    
+  val funcName = func :: subfuncs
   
   val allConfigs = cmdConfig :: configs
   
@@ -32,26 +42,24 @@ case class FullConfig(
   
   def arg(key: String): List[String] = args(key)
   
-  
-  def argWithAlias(keys: String*): List[String] = {
+  def argWithAlias(key: String, aliases: String*): List[String] = {
+    
+    val keys = key :: aliases.toList
     
     for{
-      conf <- configs
+      conf <- allConfigs
       key <- keys if conf.args.contains(key)
     } return conf.args(key)
     Nil
   }
 
-  
-  def adjustPositionalArgs(pos: List[String]): FullConfig = FullConfig(cmdConfig.copy(args = cmdConfig.args + ("-" -> pos)), configs, func, subfuncs)
-  
-  def adjusted(subf: List[String]) = {
-    if(subf.isEmpty)
-      this
-    else if(cmdConfig.args.contains("-"))
-      throw new IllegalArgException("too many pos args") 
-    else 
-      FullConfig(cmdConfig, configs, func, subf) //args = fullConfig.args + ("-" -> fullConfig.subfuncs), subfuncs = List())
+  def argWithAliasExists(key: String, aliases: String*): Boolean = !argWithAlias(key, aliases: _*).isEmpty
+
+  override def toString() = {
+    
+    def formatCfg(cfg: Config): String = "%s: %s".format(cfg.origin, cfg.args.mkString(", "))
+    
+    "%s %s%s\nargs: %s".format(func, subfuncs.mkString(" "), allConfigs.map(formatCfg).mkString("\n  ", "\n  ", ""), args)
   }
   
 }

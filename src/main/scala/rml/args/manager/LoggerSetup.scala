@@ -1,7 +1,8 @@
 package rml.args.manager
 
 import org.slf4j.LoggerFactory
-import ch.qos.logback.classic.LoggerContext
+
+import ch.qos.logback.classic.{Level => LogbackLevel}
 
 //sealed abstract class LogLevel
 //case object TRACE extends LogLevel

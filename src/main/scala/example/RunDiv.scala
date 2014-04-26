@@ -26,7 +26,7 @@ object RunDiv {
     import collection.JavaConversions._
     for((k, v) <- System.getenv().toList.sortBy(_._1) if k.startsWith(f)) println(k + "\t" + v)
   }
-  FunctionRegister("args")            = Func(AllArgs()){ for((k, v) <- _) println(k + ":\t" + v.mkString("\n\t")) }
+  FunctionRegister("args")            = Func(AllArgs()){ x => for((k, v) <- x.args) println(k + ":\t" + v.mkString("\n\t")) }
   FunctionRegister("dbff")            = Func(DbFromFile("db", Files("dbconf")) -- "Db", JString("-")){(d, s) => println(d); println(s)} -- "Database from file"
   FunctionRegister("dbsff")           = Func(DbsFromFile("db", Files("dbconf")) -- "Db"){println} -- "Databases from file"
   

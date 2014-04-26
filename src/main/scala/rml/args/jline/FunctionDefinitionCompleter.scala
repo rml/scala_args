@@ -20,14 +20,14 @@ class FunctionDefinitionCompleter extends Completer {
     val baseCmd = buffer.trim
     val checkCmd = baseCmd + (if(baseCmd.endsWith("-") && !baseCmd.endsWith("--")) "-" else "") 
     val functionArgs = CommandlineArgReader(checkCmd)
-    val key = FunctionRegister.getPartKey(functionArgs.func :: functionArgs.subfuncs)
+    val key = FunctionRegister.findLongestMatching(functionArgs.func :: functionArgs.subfuncs)
     
     if(!key.isDefined){
       return -1
     }
     
     val functionDefinition = FunctionRegister.get(key.get)
-    val allArgs = functionDefinition.args.map(_.key).toSet
+    val allArgs = functionDefinition.args.flatMap(_.inputArgs).map(_.key).toSet
     val usedArgs = functionArgs.args.keySet
     val remainingArgs = allArgs -- usedArgs
 

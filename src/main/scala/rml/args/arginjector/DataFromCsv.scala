@@ -5,19 +5,20 @@ import rml.args.conversions.files.Files
 import rml.args.conversions.strings.Strings
 import rml.args.util.CsvReader
 import rml.args.exceptions.IllegalArgException
+import rml.args.domain.FullConfig
 
 trait DataFromCsv extends Injector {
 
   val files: Files
   
-  override def inject(argMap: Map[String, List[String]], key: Map[String, String]): Map[String, List[String]] = {
+  override def inject(config: FullConfig, key: Map[String, String]): FullConfig = {
 
-    files.apply(argMap).foreach{ file =>
+    files.apply(config).foreach{ file =>
       CsvReader.findKey(file, key) match {
-        case Some(m) => return m.map{case(k,v) => (k,List(v))} ++ argMap
+        case Some(m) => return config.over(m.map{case(k,v) => (k,List(v))})
         case None =>
       }
     }
-    argMap
+    config
   }
 }
