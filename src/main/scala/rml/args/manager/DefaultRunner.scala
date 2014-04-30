@@ -35,6 +35,14 @@ object DefaultRunner extends Logging {
       case fnfe: FunctionNotFoundException => 
         
         error("Function '" + fnfe.function.head + "' not found\nDid you mean one of these?")
+        
+      case e: Exception => 
+        
+        error(e.getMessage)
+        
+        if(fullConfig.args.contains("-stack")){
+          e.printStackTrace()
+        }
     }
   }
 }

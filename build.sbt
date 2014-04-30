@@ -9,7 +9,7 @@ version := scala.reflect.io.File("version.txt").lines.next.trim
 
 organization := "rml"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.4"
 
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
@@ -19,7 +19,7 @@ libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
 
 libraryDependencies += "org.ccil.cowan.tagsoup" % "tagsoup" % "1.2.1"
 
-libraryDependencies += "com.typesafe" %% "scalalogging-slf4j" % "1.0.1"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.0.13"
 
