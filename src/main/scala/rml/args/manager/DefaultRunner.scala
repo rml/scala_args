@@ -1,8 +1,7 @@
 package rml.args.manager
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
 
-import rml.args.argdecorator.Opt
 import rml.args.domain.FullConfig
 import rml.args.exceptions.FunctionNotFoundException
 import rml.args.exceptions.IllegalArgException

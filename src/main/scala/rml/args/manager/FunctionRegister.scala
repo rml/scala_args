@@ -1,19 +1,9 @@
 package rml.args.manager
 
+import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+
 import rml.args.domain.Function
-import rml.args.domain.FullConfig
-import rml.args.domain.Func
-import rml.args.argdecorator.Opt
-import rml.args.conversions.strings.PString
 import rml.args.exceptions.IllegalArgException
-import rml.args.reader.ConfReader
-import rml.args.conversions.strings.PString
-import rml.args.arg.Flag
-import rml.args.conversions.strings.JString
-import rml.args.argmapper.PositionalArg
-import rml.args.arg.Arg
-import rml.args.exceptions.FunctionNotFoundException
-import com.typesafe.scalalogging.slf4j.Logging
 
 /**
  * Central register for function definitions

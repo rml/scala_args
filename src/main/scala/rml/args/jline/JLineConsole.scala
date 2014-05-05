@@ -9,8 +9,12 @@ import rml.args.manager.DefaultRunner
 import rml.args.manager.FunctionRegister
 import jline.console.history.FileHistory
 import java.io.File
+import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import rml.args.exceptions.IllegalArgException
 
-object JLineConsole {
+object JLineConsole extends Logging {
+
+  import logger._
 
   def open(prompt: String, prefix: String) = {
 
@@ -42,7 +46,12 @@ object JLineConsole {
         
         line match {
           case "exit" => exit(history)
-          case l => DefaultRunner(l, prefix)
+          case l => 
+            try {
+              DefaultRunner(l, prefix)
+            } catch {
+              case iae: IllegalArgException => error(iae.getMessage)
+            }
         }
         
         line = console.readLine()

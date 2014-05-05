@@ -3,7 +3,7 @@ package rml.args.domain
 import java.text.SimpleDateFormat
 import java.util.Date
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
 
 case class FullConfig(
     cmdConfig: Config,

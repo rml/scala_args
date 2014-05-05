@@ -1,10 +1,10 @@
 package rml.args.manager
 
+import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+
 import rml.args.domain.FullConfig
-import com.typesafe.scalalogging.slf4j.Logging
-import rml.args.exceptions.FunctionNotFoundException
-import rml.args.exceptions.IllegalArgException
 import rml.args.domain.Function
+import rml.args.exceptions.FunctionNotFoundException
 
 object FunctionRunner extends Logging {
 
