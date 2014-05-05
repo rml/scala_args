@@ -15,21 +15,33 @@ object FunctionRunner extends Logging {
    */
   def run(fullConfig: FullConfig): Any = {
 
-    debug("{}", fullConfig)
+    debug("fullConfig: {}", fullConfig)
 
     val leadingTokens = fullConfig.funcName
+    
+    debug("leadingTokens: {}", leadingTokens.mkString(" "))
     
     val functionName = FunctionRegister.findLongestMatching(leadingTokens) match {
       
       case Some(k) => k
       case None => throw new FunctionNotFoundException(leadingTokens)
     }
+    
+    debug("functionName: {}", functionName.mkString(" "))
 
     val function: Function[_] = FunctionRegister.get(functionName)
     
-    val adjustedConfig: FullConfig = ConfigAdjuster(fullConfig, function, functionName)
+    debug("function: {}", function)
     
-    function(adjustedConfig)    
+    val adjustedConfig: FullConfig = ConfigAdjuster(fullConfig, function, functionName)
+
+    debug("adjustedConfig: {}", adjustedConfig)
+
+    val result = function(adjustedConfig)    
+    
+    trace("result: {}", result.toString)
+    
+    result
   }
 
 }

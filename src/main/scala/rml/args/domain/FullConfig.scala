@@ -1,15 +1,18 @@
 package rml.args.domain
 
-import rml.args.exceptions.IllegalArgException
 import java.text.SimpleDateFormat
 import java.util.Date
+
+import com.typesafe.scalalogging.slf4j.Logging
 
 case class FullConfig(
     cmdConfig: Config,
     configs: List[Config],
     func: String, 
     subfuncs: List[String]  
-) {
+) extends Logging {
+  
+  import logger._
 
   def over(key: String, vals: List[String]): FullConfig = over(Map(key -> vals))
     
@@ -46,10 +49,24 @@ case class FullConfig(
     
     val keys = key :: aliases.toList
     
+    debug("argWithAlias(%s)", keys.mkString(", "))
+
     for{
       conf <- allConfigs
-      key <- keys if conf.args.contains(key)
-    } return conf.args(key)
+      key <- keys
+    }{
+      val found = conf.args.contains(key)
+      
+      if(found){
+        debug("Key {} with value {} found in config {}", key, conf.args(key), conf.origin)
+        return conf.args(key)
+      } else {
+        debug("Key {} not found in config {}", key, conf.origin)
+      }
+    }
+    
+    debug("argWithAlias: Nothing found for: %s", keys.mkString(", "))
+    
     Nil
   }
 
