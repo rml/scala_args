@@ -9,7 +9,7 @@ import rml.args.domain.FullConfig
  */
 case class FixArg[T](val fixArg: T) extends DependentArg[T] {
 
-  val args = this :: Nil
+  val args = Nil
   
   override def noInformationMissing(config: FullConfig) = true
 
