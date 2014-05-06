@@ -1,8 +1,16 @@
 package rml.args.reader
 
-trait PrefixArgReader {
+import com.typesafe.scalalogging.slf4j.LazyLogging
 
-  def filterPrefix(prefix: String) = {s: String => s.startsWith(prefix)}
+trait PrefixArgReader extends LazyLogging {
+
+  def filterPrefix(prefix: String) = {s: String => 
+    val accept = s.startsWith(prefix)
+    
+    logger.debug(s"$s $accept $prefix")
+    
+    accept
+  }
   
   def removePrefix(prefix: String) = {s: String => s.replaceFirst("^" + prefix, "").toLowerCase}
   

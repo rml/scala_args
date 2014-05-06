@@ -5,8 +5,9 @@ import rml.args.domain.FunctionArgs
 import scala.reflect.io.File
 import rml.args.domain.Config
 import rml.args.domain.FullConfig
+import com.typesafe.scalalogging.slf4j.LazyLogging
 
-object ConfReader {
+object ConfReader extends LazyLogging {
 
   def apply(args: Array[String], prefix: String, conf: String): FullConfig = {
     
@@ -22,14 +23,27 @@ object ConfReader {
 
 	val envArgs: Map[String, List[String]] = if(prefix.isEmpty) Map() else readEnvironmentVars(prefix)
 
+	logger.debug(s"envArgs: $envArgs")
+	
+	val sysProps: Map[String, List[String]] = if(prefix.isEmpty) Map() else readSystemProperties(prefix)
+
+	logger.debug(s"sysProps: $sysProps")
+	
 	val configFilePaths: List[File] = getConfigFiles(
                 cmdArgs.args.get(conf), envArgs.get(conf), defaultConfFilePaths(prefix))
 	    
+	logger.debug(s"configFilePaths: $configFilePaths")
+	
     val fileArgs: List[Config] = if(configFilePaths.isEmpty) Nil
     										  else configFilePaths.map(f => Config(parseConfigFile(f), f.path))
 
+	logger.debug(s"fileArgs: $fileArgs")
+	
     val cmdConf = Config(cmdArgs.args, "cmd")
-    FullConfig(cmdConf, Config(envArgs, "env") :: fileArgs, cmdArgs.func, cmdArgs.subfuncs)
+    
+	logger.debug(s"cmdConf: $cmdConf")
+	
+    FullConfig(cmdConf, Config(sysProps, "sysProps") :: Config(envArgs, "env") :: fileArgs, cmdArgs.func, cmdArgs.subfuncs)
   }
   
   def readCommandLineArgs(args: Array[String]): FunctionArgs = CommandlineArgReader(args)
@@ -37,6 +51,8 @@ object ConfReader {
   def readCommandLineArgs(args: String): FunctionArgs = CommandlineArgReader(args)
   
   def readEnvironmentVars(prefix: String): Map[String, List[String]] = EnvironmentArgReader.prefix(prefix)
+
+  def readSystemProperties(prefix: String): Map[String, List[String]] = SystemPropertiesArgReader.prefix(prefix.toLowerCase.replaceAll("_", "."))
 
   def defaultConfFilePaths(prefix: String): List[String] = {
 
