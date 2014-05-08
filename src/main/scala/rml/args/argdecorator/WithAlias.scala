@@ -12,5 +12,5 @@ case class WithAlias[+T](arg: InputArg[T], aliases: String*) extends ArgDelegato
     
   override def noInformationMissing(config: FullConfig) = config.argWithAliasExists(key, aliases: _*)
 
-  override def apply(config: FullConfig): T = arg.mapListToType(config.argWithAlias(key, aliases: _*))
+  override def apply(config: FullConfig): T = arg.mapListToType(config.argWithAlias(key, aliases: _*).get)
 }

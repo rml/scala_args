@@ -26,32 +26,28 @@ case class HelpFunctions(out: PrintStream = System.out) {
     }
   }
 
+  def printArg(arg: InputArg[_], indent: String, suffix: String): Unit = {
+
+    printf("%-15s %s\n", "  ", arg.key, arg.showdesc)    	  
+  }
+    	
   /**
    * Print detailed information about one function (temporary solution)
    */
   def printFunctionDescription(name: String, func: Function[_], withOrigin: Boolean = false) = {
 
-    val format = "%-" + (name.length + 5) + "s     %-10s %s\n"
-    printf(format, name, func.description, "")
-
-    def printArg(arg: InputArg[_], suffix: String): Unit = {
-      val suffix = arg match {
-        case parg: PositionalArg[_] => " (" + parg.pos + ")"
-//        case Opt(parg: PositionalArg[_]) => " (" + parg.pos + ")"
-        case marg: Function[_] => return for(a <- marg.inputArgs){ printArg(a, "") }
-        case _ => ""
-      }
-
-      printf(format, "  ", arg.key + suffix, arg.showdesc)    	  
-    }
-    	
-    for(arg <- func.inputArgs) {
-      printArg(arg, "")
-    }
+    val indent = " " * 5
     
-    if(withOrigin){
-      println()
-      println("Origin: " + func.origin.origin)
+    val nameAndOrigin = name + (if(withOrigin) " (Origin: %s)".format(func.origin.origin) else "")
+
+    println(nameAndOrigin)
+    println("_" * nameAndOrigin.length)
+    println("\nDescription:")
+    println(indent + func.description)
+    println("\nArguments:")
+    
+    for(arg <- func.inputArgs) {
+      printArg(arg, indent, "")
     }
   }
   

@@ -14,6 +14,7 @@ object RunString {
   FunctionRegister("foo"::"bar"::Nil) = / / "tralala" /
 		  								Func(AString("bar") -- "Name of the bar"){ println }
   FunctionRegister("foo"::"baz"::Nil) = Func(AString("baz")){ println }
+  FunctionRegister("foo") = Func(AString("barbaz")){ println }
   FunctionRegister("upper")           = Func(JUpperString("-")){ println }
   FunctionRegister("lower")           = Func(JLowerString("-")){ println }
 

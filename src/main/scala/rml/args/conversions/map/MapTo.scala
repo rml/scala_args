@@ -4,9 +4,11 @@ import rml.args.arg._
 import rml.args.argmapper._
 import rml.args.exceptions.IllegalArgException
 
-class MapTo[T](map: Map[String, T]) {
+class MapTo[T](map: Map[String, T]) extends SetRestriction {
   def mapToType(value: String): T = map(value)
-  
+
+  def allowed = map.keySet
+    
   override def toString = map.keys.toList.sorted.mkString("[", ", ", "]")
 }
 

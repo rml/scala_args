@@ -5,8 +5,9 @@ import rml.args.argmapper.ListArg
 import rml.args.argmapper.PositionalArg
 import rml.args.argmapper.SingleArg
 import rml.args.exceptions.IllegalArgException
+import rml.args.arg.SetRestriction
 
-trait ToEnum[E <: Enumeration] {
+trait ToEnum[E <: Enumeration] extends SetRestriction {
     
   val enum: E
   val key: String
@@ -15,6 +16,8 @@ trait ToEnum[E <: Enumeration] {
   } catch {
     case nsee: NoSuchElementException => throw new IllegalArgException(key, value, (0 until enum.maxId).toList.map(enum(_).toString))
   }
+  
+  def allowed = enum.values.map(_.toString)
   
   override def toString = enum.values.mkString("[", ", ", "]")
 }

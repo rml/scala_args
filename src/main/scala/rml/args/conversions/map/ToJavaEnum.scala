@@ -4,11 +4,14 @@ import rml.args.argmapper.PositionalArg
 import rml.args.argmapper.SingleArg
 import rml.args.argmapper.List0Arg
 import rml.args.argmapper.ListArg
+import rml.args.arg.SetRestriction
 
-trait ToJavaEnum[C <: Enum[C]] {
+trait ToJavaEnum[C <: Enum[C]] extends SetRestriction {
     
   val clazz: java.lang.Class[C]
   def mapToType(value: String) = Enum.valueOf(clazz, value)
+  
+  def allowed = clazz.getEnumConstants().map(_.toString).toSet
   
   override def toString = clazz.getEnumConstants().mkString(clazz.getName() + "[", ", ", "]")
 }

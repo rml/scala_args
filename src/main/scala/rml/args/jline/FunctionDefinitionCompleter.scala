@@ -1,11 +1,11 @@
 package rml.args.jline
 
 import scala.collection.JavaConversions.seqAsJavaList
-
 import jline.console.completer.Completer
 import jline.console.completer.StringsCompleter
 import rml.args.manager.FunctionRegister
 import rml.args.reader.CommandlineArgReader
+import rml.args.arg.SetRestriction
 
 class FunctionDefinitionCompleter extends Completer {
 
@@ -31,23 +31,44 @@ class FunctionDefinitionCompleter extends Completer {
     val usedArgs = functionArgs.args.keySet
     val remainingArgs = allArgs -- usedArgs
 
-    val lastArg = functionArgs.lastArg
+    val lastArgKey = functionArgs.lastArg
+
+    val argToComplete = lastArgKey != ""
+
+    val lastArgValues = if(argToComplete) functionArgs.args(lastArgKey) else List[String]()
+    val noArgValues = lastArgValues.isEmpty
+    val editingValue = !buffer.endsWith(" ")
     
-    if(functionArgs.trailingDash) {
-      
+    if(functionArgs.trailingDash) { // new arg, taken from remainingArgs
+
       val argsCompleter = new StringsCompleter(remainingArgs.map("-" + _).toList.sorted)
       
       if(argsCompleter.complete("-", cursor, candidates) == 0){
         return buffer.size - 1
       }
 
-    } else if(lastArg != "" && functionArgs.args(lastArg).isEmpty && !buffer.endsWith(" ")) {
+    } else if(argToComplete && noArgValues && editingValue) { // new arg, taken from remainingArgs
 
-      val args = if(allArgs.contains(lastArg)) remainingArgs + lastArg else remainingArgs
+      val args = if(allArgs.contains(lastArgKey)) remainingArgs + lastArgKey else remainingArgs
       val argsCompleter = new StringsCompleter(args.map("-" + _).toList.sorted)
       
-      if(argsCompleter.complete("-" + lastArg, cursor, candidates) == 0){
-        return buffer.size - lastArg.size - 1
+      if(argsCompleter.complete("-" + lastArgKey, cursor, candidates) == 0){
+        return buffer.size - lastArgKey.size - 1
+      }
+    } else if(argToComplete && functionDefinition.inputArg.contains(lastArgKey)) {
+      
+      val argDef = functionDefinition.inputArg(lastArgKey)
+      
+      argDef match {
+        case setValues: SetRestriction => 
+          val values = setValues.allowed
+          val valuesCompleter = new StringsCompleter(values.toList.sorted)
+          val part = if(editingValue) lastArgValues.reverse.headOption.getOrElse("") else ""
+
+          if(valuesCompleter.complete(part, cursor, candidates) == 0){
+        	  return buffer.size - part.size
+          }
+        case _ => -1
       }
     }
     

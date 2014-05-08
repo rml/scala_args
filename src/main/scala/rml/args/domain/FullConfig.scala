@@ -45,10 +45,10 @@ case class FullConfig(
   
   def arg(key: String): List[String] = args(key)
   
-  def argWithAlias(key: String, aliases: String*): List[String] = {
+  def argWithAlias(key: String, aliases: String*): Option[List[String]] = {
     
     val keys = key :: aliases.toList
-    
+
     debug("argWithAlias(%s)", keys.mkString(", "))
 
     for{
@@ -59,18 +59,18 @@ case class FullConfig(
       
       if(found){
         debug("Key {} with value {} found in config {}", key, conf.args(key), conf.origin)
-        return conf.args(key)
+        return Some(conf.args(key))
       } else {
         debug("Key {} not found in config {}", key, conf.origin)
       }
     }
     
     debug("argWithAlias: Nothing found for: %s", keys.mkString(", "))
-    
-    Nil
+
+    None
   }
 
-  def argWithAliasExists(key: String, aliases: String*): Boolean = !argWithAlias(key, aliases: _*).isEmpty
+  def argWithAliasExists(key: String, aliases: String*): Boolean = argWithAlias(key, aliases: _*).isDefined
 
   override def toString() = {
     

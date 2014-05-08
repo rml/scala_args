@@ -34,15 +34,22 @@ object DefaultSetup extends Logging {
       LoggerSetup.setLoglevel(ll)
     }
 
+    def propertiesKey(key: String): String = prefix.toLowerCase.replaceAll("_", ".") + key
+    
     FunctionRegister(systemPrefix + "set") = Func(Strings0("-")){ envVar =>
       
       import scala.collection.JavaConversions._
       
       envVar match {
         case Nil => System.getProperties().foreach{ case(k,v) => println(s"$k: $v")}
-        case key :: Nil => error("Value for key $key missing")
-        case key :: value => System.setProperty(prefix.toLowerCase.replaceAll("_", ".") + key, value.mkString(" "))
+        case key :: Nil => error(s"Value for key $key missing")
+        case key :: value => System.setProperty(propertiesKey(key), value.mkString(" "))
       }
+    }
+
+    FunctionRegister(systemPrefix + "unset") = Func(AString("-")){ key =>
+      val v = System.getProperties().remove(propertiesKey(key))
+      debug(s"Key $key with value $v removed")
     }
 
     FunctionRegister(systemPrefix + "logpattern") = Func(JString("-")){ pattern =>
