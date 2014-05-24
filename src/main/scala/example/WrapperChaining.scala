@@ -1,10 +1,7 @@
 package example
 
-import rml.args.conversions.strings.JString
-import rml.args.conversions.strings.Strings
-import rml.args.conversions.strings.Strings0
+import rml.args.conversions.strings._
 import rml.args.arg.InputArg
-import rml.args.conversions.strings.AString
 
 object WrapperChaining {
 

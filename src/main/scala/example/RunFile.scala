@@ -1,11 +1,11 @@
 package example
 
-import rml.args.argdecorator.WithDefault
-import rml.args.conversions.files._
-import rml.args.domain.Func
-import rml.args.manager.FunctionRegister
-import scala.reflect.io.File
-import rml.args.manager.FunctionOrigin
+import rml.args.arg.function.FunctionOrigin
+import rml.args.register.FunctionRegister
+import rml.args.arg.Func
+import rml.args.conversions.files.PFile
+import rml.args.conversions.files.CwdOrDir
+import rml.args.conversions.files.HomeOrDir
 
 object RunFile {
 

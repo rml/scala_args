@@ -1,18 +1,29 @@
 package rml.args.conversions.strings
 
-import rml.args.arg._
-import rml.args.argmapper._
+import rml.args.arg.InputArg
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.SingleArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.JoinArg
+import rml.args.arg.restriction.NotRestricted
 
-class ToUpperString {
+
+trait ToUpperString extends NotRestricted {
+  
+  val baseType: String = "UpperString"
+    
   def mapToType(value: String): String = value.toUpperCase  
 }
 
-case class UpperString(val key: String) extends ToUpperString with SingleArg[String]
 
-case class JUpperString(val key: String) extends ToUpperString with JoinArg[String]
+object AUpperString { def apply(key: String) = InputArg(key, new SingleArg[String] with ToUpperString) }
 
-case class UpperStrings(val key: String) extends ToUpperString with ListArg[String]
+object JUpperString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToUpperString { override val sep = ""} ) }
 
-case class UpperStrings0(val key: String) extends ToUpperString with List0Arg[String]
+object UpperStrings { def apply(key: String) = InputArg(key, new ListArg[String] with ToUpperString) }
 
-case class PUpperString(val pos: Int) extends ToUpperString with PositionalArg[String]
+object UpperStrings0{ def apply(key: String) = InputArg(key, new ListArg0[String] with ToUpperString) }
+
+object PUpperString { def apply(pos: Int)    = InputArg("-", new ToUpperString with PositionalArg[String]{ val position = pos }) }
+

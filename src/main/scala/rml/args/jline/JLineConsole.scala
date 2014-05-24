@@ -1,16 +1,19 @@
 package rml.args.jline
 
+import java.io.File
+
 import scala.collection.JavaConversions.seqAsJavaList
+
+import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+
 import jline.TerminalFactory
 import jline.console.ConsoleReader
 import jline.console.completer.ArgumentCompleter
 import jline.console.completer.StringsCompleter
-import rml.args.manager.DefaultRunner
-import rml.args.manager.FunctionRegister
 import jline.console.history.FileHistory
-import java.io.File
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
 import rml.args.exceptions.IllegalArgException
+import rml.args.run.DefaultRunner
+import rml.args.register.FunctionRegister
 
 object JLineConsole extends Logging {
 

@@ -1,4 +1,4 @@
-import rml.args.manager.FunctionOrigin
+import rml.args.arg.function.FunctionOrigin
 
 package object example {
 

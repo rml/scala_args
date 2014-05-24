@@ -1,11 +1,12 @@
 package rml.args.jline
 
 import scala.collection.JavaConversions.seqAsJavaList
+
 import jline.console.completer.Completer
 import jline.console.completer.StringsCompleter
-import rml.args.manager.FunctionRegister
-import rml.args.reader.CommandlineArgReader
-import rml.args.arg.SetRestriction
+import rml.args.config.reader.CommandlineArgReader
+import rml.args.register.FunctionRegister
+import rml.args.arg.restriction.SetRestriction
 
 class FunctionDefinitionCompleter extends Completer {
 
@@ -55,19 +56,21 @@ class FunctionDefinitionCompleter extends Completer {
       if(argsCompleter.complete("-" + lastArgKey, cursor, candidates) == 0){
         return buffer.size - lastArgKey.size - 1
       }
+      
     } else if(argToComplete && functionDefinition.inputArg.contains(lastArgKey)) {
       
       val argDef = functionDefinition.inputArg(lastArgKey)
-      
-      argDef match {
-        case setValues: SetRestriction => 
-          val values = setValues.allowed
-          val valuesCompleter = new StringsCompleter(values.toList.sorted)
-          val part = if(editingValue) lastArgValues.reverse.headOption.getOrElse("") else ""
 
-          if(valuesCompleter.complete(part, cursor, candidates) == 0){
-        	  return buffer.size - part.size
-          }
+      argDef.restriction match {
+        
+        case setRestriction: SetRestriction =>
+            val values = setRestriction.allowed
+            val valuesCompleter = new StringsCompleter(values.toList.sorted)
+            val part = if(editingValue) lastArgValues.reverse.headOption.getOrElse("") else ""
+            	
+            	if(valuesCompleter.complete(part, cursor, candidates) == 0){
+            		return buffer.size - part.size
+            	}
         case _ => -1
       }
     }

@@ -1,22 +1,29 @@
 package rml.args.conversions.strings
 
-import rml.args.argmapper.JoinArg
-import rml.args.argmapper.List0Arg
-import rml.args.argmapper.ListArg
-import rml.args.argmapper.PositionalArg
-import rml.args.argmapper.SingleArg
+import rml.args.arg.InputArg
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.SingleArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.JoinArg
+import rml.args.arg.restriction.NotRestricted
 
-class ToLowerString {
+
+trait ToLowerString extends NotRestricted {
+  
+  val baseType: String = "LowerString"
+    
   def mapToType(value: String): String = value.toLowerCase  
 }
 
-case class LowerString(val key: String) extends ToLowerString with SingleArg[String]
 
-case class JLowerString(val key: String) extends ToLowerString with JoinArg[String]
+object ALowerString { def apply(key: String) = InputArg(key, new SingleArg[String] with ToLowerString) }
 
-case class LowerStrings(val key: String) extends ToLowerString with ListArg[String]
+object JLowerString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToLowerString { override val sep = ""} ) }
 
-case class LowerStrings0(val key: String) extends ToLowerString with List0Arg[String]
+object LowerStrings { def apply(key: String) = InputArg(key, new ListArg[String] with ToLowerString) }
 
-case class PLowerString(val pos: Int) extends ToLowerString with PositionalArg[String]
+object LowerStrings0{ def apply(key: String) = InputArg(key, new ListArg0[String] with ToLowerString) }
+
+object PLowerString { def apply(pos: Int)    = InputArg("-", new ToLowerString with PositionalArg[String]{ val position = pos }) }
 

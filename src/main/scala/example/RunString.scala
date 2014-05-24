@@ -1,10 +1,15 @@
 package example
-import rml.args.manager.FunctionRegister
-import rml.args.domain.Func
-import rml.args.conversions.strings._
-import rml.args.argdecorator.Env
-import rml.args.domain./
-import rml.args.manager.FunctionOrigin
+
+import rml.args.arg.Func
+import rml.args.arg.decorator.Env
+import rml.args.arg.{/ => /}
+import rml.args.arg.function.FunctionOrigin
+import rml.args.register.FunctionRegister
+import rml.args.conversions.strings.AString
+import rml.args.conversions.strings.JUpperString
+import rml.args.conversions.strings.LowerStrings
+import rml.args.conversions.strings.JLowerString
+import rml.args.conversions.strings.UpperStrings
 
 object RunString {
   
@@ -19,7 +24,7 @@ object RunString {
   FunctionRegister("lower")           = Func(JLowerString("-")){ println }
 
   val uplo = / / "Convert one string to uppercase and another to lowercase" /
-  Func(LowerString("l") -- "Convert to upper", UpperString("u") -- "Convert to lower"){ (lo, up) => 
+  Func(LowerStrings("l") -- "Convert to upper", UpperStrings("u") -- "Convert to lower"){ (lo, up) => 
     println("Upper: " + up)
     println("Lower: " + lo)
   }

@@ -1,21 +1,28 @@
 package rml.args.conversions.strings
 
-import rml.args.argmapper.JoinArg
-import rml.args.argmapper.List0Arg
-import rml.args.argmapper.ListArg
-import rml.args.argmapper.PositionalArg
-import rml.args.argmapper.SingleArg
+import rml.args.arg.InputArg
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.SingleArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.JoinArg
+import rml.args.arg.restriction.NotRestricted
 
-class ToString{
+
+trait ToString extends NotRestricted {
+  
+  val baseType: String = "String"
+  
   def mapToType(value: String): String = value
 }
 
-case class AString(val key: String) extends ToString with SingleArg[String]
 
-case class JString(val key: String) extends ToString with JoinArg[String]
+object AString { def apply(key: String) = InputArg(key, new SingleArg[String] with ToString) }
 
-case class Strings(val key: String) extends ToString with ListArg[String]
+object JString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToString { override val sep = ""} ) }
 
-case class Strings0(val key: String) extends ToString with List0Arg[String]
+object Strings { def apply(key: String) = InputArg(key, new ListArg[String] with ToString) }
 
-case class PString(val pos: Int) extends ToString with PositionalArg[String]
+object Strings0{ def apply(key: String) = InputArg(key, new ListArg0[String] with ToString) }
+
+object PString { def apply(pos: Int)    = InputArg("-", new ToString with PositionalArg[String]{ val position = pos }) }

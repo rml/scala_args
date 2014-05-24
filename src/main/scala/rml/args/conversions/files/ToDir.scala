@@ -3,17 +3,23 @@ package rml.args.conversions.files
 import scala.reflect.io.File
 import scala.reflect.io.Path.string2path
 
-import rml.args.arg.FixArg
-import rml.args.argdecorator.Env
-import rml.args.argdecorator.WithDefault
-import rml.args.argmapper.List0Arg
-import rml.args.argmapper.ListArg
-import rml.args.argmapper.PositionalArg
-import rml.args.argmapper.SingleArg
+import rml.args.arg.InputArg
+import rml.args.arg.decorator.Env
+import rml.args.arg.input.JoinArg
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.SingleArg
+import rml.args.arg.special.FixArg
 import rml.args.exceptions.IllegalArgException
+import rml.args.arg.restriction.FileRestricted
 
-class ToDir {
+trait ToDir extends FileRestricted {
+  
+  val baseType: String = "File"  
+  
   def mapToType(value: String): File = {
+    
     val dir = File(value)
     if(!dir.exists || dir.isDirectory)
       dir
@@ -22,21 +28,26 @@ class ToDir {
   }
 }
 
-case class ADir(val key: String) extends ToDir with SingleArg[File]
 
-case class Dirs(val key: String) extends ToDir with ListArg[File]
+object ADir { def apply(key: String) = InputArg(key, new SingleArg[File] with ToDir) }
 
-case class Dirs0(val key: String) extends ToDir with List0Arg[File]
+object JDir { def apply(key: String) = InputArg(key, new JoinArg[File] with ToDir { override val sep = ""} ) }
 
-case class PDir(val pos: Int) extends ToDir with PositionalArg[File]
+object Dirs { def apply(key: String) = InputArg(key, new ListArg[File] with ToDir) }
+
+object Dirs0{ def apply(key: String) = InputArg(key, new ListArg0[File] with ToDir) }
+
+object PDir { def apply(pos: Int)    = InputArg("-", new ToDir with PositionalArg[File]{ val position = pos }) }
+
 
 object CwdOrDir{
-
-  def apply(key: String) = WithDefault(ADir("-"), FixArg(File(".")))
+  
+  def apply(key: String) = ADir(key) -> FixArg(File("."))
 }
 
-object HomeOrDir{
 
-  def apply(key: String) = WithDefault(ADir(key), Env(AFile("HOME")))
+object HomeOrDir {
+
+  def apply(key: String) = ADir(key) -> Env(ADir("HOME"))
 }
 

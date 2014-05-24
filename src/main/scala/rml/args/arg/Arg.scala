@@ -1,23 +1,22 @@
 package rml.args.arg
 
-import rml.args.domain.FullConfig
+import rml.args.config.FullConfig
+import scala.util.Try
+import scala.reflect.runtime.universe._
 
 /**
  * Trait that represents an argument of type T
  */
 trait Arg[+T] {
 
+  val typeInfo: String
+
   def inputArgs: Set[InputArg[_]]
   
-  /**
-   * Checks, whether the argument has all information needed to return a meaningful value
-   */
-  def noInformationMissing(config: FullConfig): Boolean
-
-  /**
-   * Takes TODO and returns the argument value of type T
-   */
-  def apply(config: FullConfig): T
+  def apply(config: FullConfig): Try[T]
   
+  def map[S](func: T => S): Arg[S]
+  
+  def flatMap[S](func: T => Try[S]): Arg[S]
 }
 

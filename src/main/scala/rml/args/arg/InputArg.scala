@@ -1,31 +1,107 @@
 package rml.args.arg
 
-import rml.args.domain.FullConfig
+import scala.util.Try
 
-trait InputArg[+T] extends Arg[T] with InputConvenienceMethods[T] with DescriptionMethods[InputArg[T]] {
+import rml.args.arg.restriction.FixRestriction
+import rml.args.arg.restriction.NoRestriction
+import rml.args.arg.restriction.Restriction
+import rml.args.arg.special.FixArg
+import rml.args.config.FullConfig
+import rml.args.exceptions.IllegalArgException
 
-  val inputArgs: Set[InputArg[_]] = Set(this)
+final case class InputArg[+T](key: String, mapper: InputMapper[T], argState: ArgState = ArgState(), defaultArgs: List[Arg[T]] = List.empty) extends Arg[T] {
+
+  val description: String = argState.description
+
+  override val typeInfo: String = mapper.typeInfo
   
-  /**
-   * Name that identifies the argument
-   */
-  val key: String
+  def restriction: Restriction = argState.restriction match {
+    
+    case NoRestriction => mapper.restriction
+    case restriction => restriction
+  }
+  
+  override def inputArgs: Set[InputArg[_]] = Set(this)
+  
+  def defaultArgValue(config: FullConfig): Try[T] = {
+    
+    defaultArgs.map(_.apply(config)).find(_.isSuccess).getOrElse(throw new IllegalArgException("No default argument for key " + key))
+  }
+  
+
+  override def apply(config: FullConfig): Try[T] = {
+
+    val mainArg = mapper(config, key, argState.aliases)
+    
+    val withDefault = if(defaultArgs.isEmpty) mainArg else mainArg.orElse(defaultArgValue(config))
+    
+    withDefault.orElse(throw new IllegalArgException("No value for key " + key))
+  }
+
+  
+  private def mkMapper[S](applyFunc: (FullConfig, String, List[String]) => Try[S]): InputMapper[S] = {
+    
+    new InputMapper[S] {
+
+      override def restriction: Restriction = mapper.restriction
+
+      override def getUnused(argList: List[String]): List[String] = mapper.getUnused(argList)
+  
+      override def getUsed(argList: List[String]): List[String] = mapper.getUsed(argList)
+    
+      override def apply(config: FullConfig, key: String, aliases: List[String]): Try[S] = {
+        applyFunc(config, key, aliases)
+      }
+    }
+  }
+  
+
+  override def map[S](func: T => S): InputArg[S] = {
+    
+    InputArg[S](key, mkMapper{ mapper.apply(_, _, _).map(func) }, argState, List.empty)
+  }
+
+  override def flatMap[S](func: T => Try[S]): InputArg[S] = {
+    
+    InputArg[S](key, mkMapper{ mapper.apply(_, _, _).flatMap(func) }, argState, List.empty)
+  }
+
+  
+  def map[S](func: (InputArg[T], FullConfig) => Try[S]): InputArg[S] = {
+    
+    InputArg[S](key, mkMapper{ (config, key, aliases) => func(this, config) }, argState, List.empty)
+  }
+
   
   /**
    * returns the strings not used by this argument
    */
-  def getUnused(argList: List[String]): List[String] = List.empty
+  def getUnused(argList: List[String]): List[String] = mapper.getUnused(argList)
   
   /**
    * returns the strings used by this argument
    */
-  def getUsed(argList: List[String]): List[String] = argList
-
-  def apply(config: FullConfig): T = mapListToType(config.arg(key))
+  def getUsed(argList: List[String]): List[String] = mapper.getUsed(argList)
   
-  /**
-   * 
-   */
-  def mapListToType(stringArgs: List[String]): T
+  
+  def withAlias(aliases: String*): InputArg[T] = copy(argState = argState.copy(aliases = aliases.toList))
+  def        ~ (aliases: String*): InputArg[T] = withAlias(aliases: _*)
+  def        + (aliases: String*): InputArg[T] = withAlias(aliases: _*)
+  
+  def withDefault[X >: T](defaultArgs: Arg[X]*): InputArg[X] = copy(defaultArgs = defaultArgs.toList)
+  def         -> [X >: T](defaultArgs: Arg[X]*): InputArg[X] = withDefault(defaultArgs: _*)
+
+  def withDefault[X >: T](default: X): InputArg[X] = withDefault(FixArg(default))
+  def         -> [X >: T](default: X): InputArg[X] = withDefault(default)
+  
+  def withDescription(desc: String): InputArg[T] = copy(argState = argState.copy(description = desc))
+  def             -- (desc: String): InputArg[T] = withDescription(desc)
+
+  def withRestriction(restriction: Restriction ): InputArg[T] = copy(argState = argState.copy(restriction = restriction))
+  def            |-> (restriction: Restriction ): InputArg[T] = withRestriction(restriction)
+  
+  def withRestriction(inputValues: List[String]): InputArg[T] = withRestriction(FixRestriction(inputValues.toSet))
+  def            |-> (inputValues: List[String]): InputArg[T] = withRestriction(restriction)
+  
   
 }

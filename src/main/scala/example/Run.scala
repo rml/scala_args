@@ -1,15 +1,16 @@
 package example
 
-import rml.args.manager.DefaultRunner
-import rml.args.manager.DefaultSetup
-import rml.args.manager.LoggerSetup
-import rml.args.manager.LogLevel._
+import rml.args.run.DefaultRunner
+import rml.args.run.DefaultSetup
+import rml.args.logging.LoggerManager
+import rml.args.logging.LogLevel._
 
 object Run {
 
   RunBasic
   RunDiv
   RunFile
+  RunGenerate
   RunMap
   RunString
 
@@ -17,8 +18,8 @@ object Run {
 
     val prefix = "GG_"
 
-    if(args.contains("-lldbg")) LoggerSetup(DEBUG)
-    else  LoggerSetup(INFO)
+    if(args.contains("-lldbg")) LoggerManager(DEBUG)
+    else  LoggerManager(INFO)
     
     DefaultSetup(prefix)
     DefaultRunner(args, prefix)

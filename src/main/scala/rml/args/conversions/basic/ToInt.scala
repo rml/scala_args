@@ -1,10 +1,26 @@
 package rml.args.conversions.basic
 
-import rml.args.arg._
-import rml.args.argmapper._
+import rml.args.arg.InputArg
 import rml.args.exceptions.IllegalArgException
+import rml.args.arg.restriction.NotRestricted
+import rml.args.arg.InputArg
+import rml.args.exceptions.IllegalArgException
+import rml.args.arg.restriction.NotRestricted
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.SingleArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.JoinArg
+import rml.args.arg.InputArg
+import rml.args.arg.InputMapper
+import rml.args.arg.ArgState
+import rml.args.arg.Arg
 
-class ToInt {
+
+trait ToInt extends NotRestricted {
+  
+  val baseType: String = "Int"
+    
   def mapToType(value: String): Int = try {
     value.toInt
   } catch {
@@ -13,10 +29,16 @@ class ToInt {
   }
 }
 
-case class AnInt(val key: String) extends ToInt with SingleArg[Int]
 
-case class Ints(val key: String) extends ToInt with ListArg[Int]
+object AInt { def apply(key: String) = InputArg(key, new SingleArg[Int] with ToInt) }
 
-case class Ints0(val key: String) extends ToInt with List0Arg[Int]
+object AnInt { def apply(key: String) = InputArg(key, new SingleArg[Int] with ToInt) }
 
-case class PInt(val pos: Int) extends ToInt with PositionalArg[Int]
+object JInt { def apply(key: String) = InputArg(key, new JoinArg[Int] with ToInt { override val sep = ""} ) }
+
+object Ints { def apply(key: String) = InputArg(key, new ListArg[Int] with ToInt) }
+
+object Ints0{ def apply(key: String) = InputArg(key, new ListArg0[Int] with ToInt) }
+
+object PInt { def apply(pos: Int)    = InputArg("-", new ToInt with PositionalArg[Int]{ val position = pos }) }
+

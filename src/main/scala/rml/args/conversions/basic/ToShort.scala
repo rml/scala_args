@@ -1,10 +1,19 @@
 package rml.args.conversions.basic
 
 import rml.args.arg._
-import rml.args.argmapper._
+import rml.args.arg.input._
 import rml.args.exceptions.IllegalArgException
+import rml.args.arg.restriction.NotRestricted
+import rml.args.arg.input.SingleArg
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.JoinArg
 
-class ToShort {
+trait ToShort extends NotRestricted {
+  
+  val baseType: String = "Short"
+    
   def mapToType(value: String): Short = try {
     value.toShort
   } catch {
@@ -13,10 +22,14 @@ class ToShort {
   }
 }
 
-case class AShort(val key: String) extends ToShort with SingleArg[Short]
 
-case class Shorts(val key: String) extends ToShort with ListArg[Short]
+object AShort { def apply(key: String) = InputArg(key, new SingleArg[Short] with ToShort) }
 
-case class Shorts0(val key: String) extends ToShort with List0Arg[Short]
+object JShort { def apply(key: String) = InputArg(key, new JoinArg[Short] with ToShort { override val sep = ""} ) }
 
-case class PShort(val pos: Int) extends ToShort with PositionalArg[Short]
+object Shorts { def apply(key: String) = InputArg(key, new ListArg[Short] with ToShort) }
+
+object Shorts0{ def apply(key: String) = InputArg(key, new ListArg0[Short] with ToShort) }
+
+object PShort { def apply(pos: Int)    = InputArg("-", new ToShort with PositionalArg[Short]{ val position = pos }) }
+

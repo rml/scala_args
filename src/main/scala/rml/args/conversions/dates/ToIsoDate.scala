@@ -3,30 +3,45 @@ package rml.args.conversions.dates
 import java.text.SimpleDateFormat
 import java.util.Date
 import rml.args.arg.Arg
-import rml.args.argmapper.List0Arg
-import rml.args.argmapper.ListArg
-import rml.args.argmapper.PositionalArg
-import rml.args.argmapper.SingleArg
-import rml.args.arg.DependentArg
-import rml.args.domain.FullConfig
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.SingleArg
+import rml.args.config.FullConfig
+import rml.args.arg.InputArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.JoinArg
+import rml.args.arg.Func
+import rml.args.arg.InputCmdMapper
+import rml.args.arg.restriction.DateRestricted
+import rml.args.arg.FuncArg
+import scala.util.Try
 
-class ToIsoDate {
+trait ToIsoDate extends DateRestricted {
+  
+  val baseType: String = "Date"
+    
   def mapToType(value: String): Date = new SimpleDateFormat("yyyy-MM-dd").parse(value)
 }
 
-case class AnIsoDate(val key: String) extends ToIsoDate with SingleArg[Date]
 
-case class IsoDates(val key: String) extends ToIsoDate with ListArg[Date]
+object AIsoDate { def apply(key: String) = InputArg(key, new SingleArg[Date] with ToIsoDate) }
 
-case class IsoDates0(val key: String) extends ToIsoDate with List0Arg[Date]
+object AnIsoDate { def apply(key: String) = InputArg(key, new SingleArg[Date] with ToIsoDate) }
 
-case class PIsoDate(val pos: Int) extends ToIsoDate with PositionalArg[Date]
+object JIsoDate { def apply(key: String) = InputArg(key, new JoinArg[Date] with ToIsoDate { override val sep = "-"} ) }
 
-case class Today() extends DependentArg[Date]{
+object IsoDates { def apply(key: String) = InputArg(key, new ListArg[Date] with ToIsoDate) }
 
-  val args = List()
+object IsoDates0{ def apply(key: String) = InputArg(key, new ListArg0[Date] with ToIsoDate) }
+
+object PIsoDate { def apply(pos: Int)    = InputArg("-", new ToIsoDate with PositionalArg[Date]{ val position = pos }) }
+
+
+object Today {
   
-  override def noInformationMissing(config: FullConfig) = true
-
-  def apply(config: FullConfig): Date = { val f = new SimpleDateFormat("yyyy-MM-dd") ; f.parse(f.format(new Date()))}
+  def apply(): Arg[Date] = Func{
+    
+    val f = new SimpleDateFormat("yyyy-MM-dd")
+    f.parse(f.format(new Date()))
+  }
 }

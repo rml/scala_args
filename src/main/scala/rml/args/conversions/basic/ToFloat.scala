@@ -1,10 +1,19 @@
 package rml.args.conversions.basic
 
 import rml.args.arg._
-import rml.args.argmapper._
+import rml.args.arg.input._
 import rml.args.exceptions.IllegalArgException
+import rml.args.arg.restriction.NotRestricted
+import rml.args.arg.input.SingleArg
+import rml.args.arg.input.PositionalArg
+import rml.args.arg.input.ListArg0
+import rml.args.arg.input.ListArg
+import rml.args.arg.input.JoinArg
 
-class ToFloat {
+trait ToFloat extends NotRestricted {
+  
+  val baseType: String = "Float"
+    
   def mapToType(value: String): Float = try {
     value.toFloat
   } catch {
@@ -13,10 +22,14 @@ class ToFloat {
   }
 }
 
-case class AFloat(val key: String) extends ToFloat with SingleArg[Float]
 
-case class Floats(val key: String) extends ToFloat with ListArg[Float]
+object AFloat { def apply(key: String) = InputArg(key, new SingleArg[Float] with ToFloat) }
 
-case class Floats0(val key: String) extends ToFloat with List0Arg[Float]
+object JFloat { def apply(key: String) = InputArg(key, new JoinArg[Float] with ToFloat { override val sep = ""} ) }
 
-case class PFloat(val pos: Int) extends ToFloat with PositionalArg[Float]
+object Floats { def apply(key: String) = InputArg(key, new ListArg[Float] with ToFloat) }
+
+object Floats0{ def apply(key: String) = InputArg(key, new ListArg0[Float] with ToFloat) }
+
+object PFloat { def apply(pos: Int)    = InputArg("-", new ToFloat with PositionalArg[Float]{ val position = pos }) }
+
