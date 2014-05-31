@@ -29,8 +29,6 @@ libraryDependencies := {
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2"
 
-libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value
-
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.0.13"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.5" % "test"

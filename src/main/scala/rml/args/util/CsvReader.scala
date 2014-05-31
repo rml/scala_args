@@ -1,6 +1,7 @@
 package rml.args.util
 
-import scala.reflect.io.File
+import java.io.File
+import scala.io.Source
 
 /**
  * Minimal temporary implementation, without any error handling
@@ -8,10 +9,18 @@ import scala.reflect.io.File
 object CsvReader {
 
   def read(file: File) = {
+
+    val source = Source.fromFile(file)
     
-    val lines = file.lines
-    val cols = lines.next.split("\t")
-    lines.map(l => cols.zip(l.split("\t")).toMap)
+    try {
+    	val lines = source.getLines
+    	val cols = lines.next.split("\t")
+    	lines.map(l => cols.zip(l.split("\t")).toMap)
+    } finally {
+      
+      source.close
+    }
+    
   }
  
   def findKey(file: File, keys: Map[String, String]): Option[Map[String, String]] = {

@@ -1,6 +1,6 @@
 package rml.args.conversions.files
 
-import scala.reflect.io.File
+import java.io.File
 import scala.reflect.io.Path.string2path
 
 import rml.args.arg.InputArg
@@ -20,11 +20,11 @@ trait ToDir extends FileRestricted {
   
   def mapToType(value: String): File = {
     
-    val dir = File(value)
+    val dir = new File(value)
     if(!dir.exists || dir.isDirectory)
       dir
     else
-      throw new IllegalArgException("'" + dir.path + "' is not a directory")
+      throw new IllegalArgException("'" + dir.getAbsolutePath() + "' is not a directory")
   }
 }
 
@@ -42,7 +42,7 @@ object PDir { def apply(pos: Int)    = InputArg("-", new ToDir with PositionalAr
 
 object CwdOrDir{
   
-  def apply(key: String) = ADir(key) -> FixArg(File("."))
+  def apply(key: String) = ADir(key) -> FixArg(new File("."))
 }
 
 

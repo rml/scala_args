@@ -1,6 +1,6 @@
 package rml.args.run
 
-import scala.reflect.io.File
+import java.io.File
 import scala.reflect.io.Path.string2path
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
@@ -41,7 +41,7 @@ object DefaultSetup extends LazyLogging {
       / / "Show configuration files" /
       Func{ 
       println("Default config files:\nFound  File")
-      ConfReader.defaultConfFilePaths(prefix).foreach(p => println("[" + (if(File(p).exists) "X" else " ") + "]    " + p))
+      ConfReader.defaultConfFilePaths(prefix).foreach(p => println("[" + (if(new File(p).exists) "X" else " ") + "]    " + p))
     }
   }
 }

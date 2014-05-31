@@ -1,19 +1,29 @@
 package rml.args.config.reader
 
-import scala.reflect.io.File
+import java.io.File
+import scala.io.Source
 
 
 case class FileArgReader(propFile: File) extends PrefixArgReader {
 
-  def getMap = (
+  def getMap = {
       
-      for{
-        l <- File(propFile).lines
-        line = l.trim if !(line.isEmpty || line.startsWith("#"))
-      } yield {
-        val split = line.span(_ != '=')
-        (split._1.trim, split._2.substring(1).trim)
+      val source = Source.fromFile(propFile)
+      
+      try {
+        
+    	  for{
+    		  l <- source.getLines.toList
+    		  line = l.trim if !(line.isEmpty || line.startsWith("#"))
+    	  } yield {
+    		  val split = line.span(_ != '=')
+    				  (split._1.trim, split._2.substring(1).trim)
+    	  }
+      } finally {
+        
+        source.close
       }
       
-  ).toMap
+      
+  }.toMap
 }

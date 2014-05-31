@@ -2,7 +2,7 @@ package rml.args.arg.decorator
 import rml.args.arg.injector.DataFromCsv
 import rml.args.arg.InputArg
 import rml.args.arg.Arg
-import scala.reflect.io.File
+import java.io.File
 import rml.args.arg.injector.ListInjector
 
 

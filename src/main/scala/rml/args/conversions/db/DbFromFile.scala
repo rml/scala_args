@@ -1,6 +1,6 @@
 package rml.args.conversions.db
 
-import scala.reflect.io.File
+import java.io.File
 
 import rml.args.arg.Arg
 import rml.args.arg.FuncArg

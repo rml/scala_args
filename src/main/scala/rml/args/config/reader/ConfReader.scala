@@ -1,7 +1,7 @@
 package rml.args.config.reader
 
 import java.io.IOException
-import scala.reflect.io.File
+import java.io.File
 import scala.reflect.io.Path.string2path
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import rml.args.config.CmdLineArgs
@@ -36,7 +36,7 @@ object ConfReader extends LazyLogging {
 	logger.debug(s"configFilePaths: $configFilePaths")
 	
     val fileArgs: List[Config] = if(configFilePaths.isEmpty) Nil
-    										  else configFilePaths.map(f => Config(parseConfigFile(f), f.path))
+    										  else configFilePaths.map(f => Config(parseConfigFile(f), f.getAbsolutePath()))
 
 	logger.debug(s"fileArgs: $fileArgs")
 	
@@ -67,17 +67,17 @@ object ConfReader extends LazyLogging {
       case Some(paths) => paths
       case None => envPaths match {
         case Some(paths) => paths
-        case None => defaultPaths.filter(File(_).exists)
+        case None => defaultPaths.filter(new File(_).exists)
       }
     }
     
-    paths.map(File(_))
+    paths.map(new File(_))
   }
   
   def parseConfigFile(confFile: File): Map[String, List[String]] = {
     
-    if(!confFile.exists) throw new IOException("Config file '" + confFile.path + "' not found")
-    if(confFile.isDirectory) throw new IOException("Config file '" + confFile.path + "' is a directory (expected a regular file)")
+    if(!confFile.exists) throw new IOException("Config file '" + confFile.getAbsolutePath() + "' not found")
+    if(confFile.isDirectory) throw new IOException("Config file '" + confFile.getAbsolutePath() + "' is a directory (expected a regular file)")
     
     FileArgReader(confFile).all()
   }

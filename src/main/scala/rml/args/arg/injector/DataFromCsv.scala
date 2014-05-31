@@ -1,6 +1,6 @@
 package rml.args.arg.injector
 
-import scala.reflect.io.File
+import java.io.File
 import rml.args.arg.Arg
 import rml.args.config.FullConfig
 import rml.args.util.CsvReader

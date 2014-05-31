@@ -1,6 +1,6 @@
 package rml.args.conversions.files
 
-import scala.reflect.io.File
+import java.io.File
 import scala.reflect.io.Path.string2path
 
 import rml.args.arg.restriction.FileRestricted
@@ -15,7 +15,7 @@ trait ToFile extends FileRestricted {
   
   val baseType: String = "File"
     
-  def mapToType(value: String): File = File(value)
+  def mapToType(value: String): File = new File(value)
 }
 
 
