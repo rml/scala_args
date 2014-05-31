@@ -40,6 +40,10 @@ final case class InputArg[+T](key: String, mapper: InputMapper[T], argState: Arg
 
   
   private def mkMapper[S](applyFunc: (FullConfig, String, List[String]) => Try[S]): InputMapper[S] = {
+    mkMapper("mapper")(applyFunc)
+  }
+    
+  private def mkMapper[S](mapperName: String)(applyFunc: (FullConfig, String, List[String]) => Try[S]): InputMapper[S] = {
     
     new InputMapper[S] {
 
@@ -52,26 +56,58 @@ final case class InputArg[+T](key: String, mapper: InputMapper[T], argState: Arg
       override def apply(config: FullConfig, key: String, aliases: List[String]): Try[S] = {
         applyFunc(config, key, aliases)
       }
+      
+      override def toString() = {
+        "InputMapper(" + mapperName + ")"
+      }
     }
   }
   
 
-  override def map[S](func: T => S): InputArg[S] = {
+  def map[S](mapperName: String)(func: T => S): InputArg[S] = {
     
-    InputArg[S](key, mkMapper{ mapper.apply(_, _, _).map(func) }, argState, List.empty)
+    val newMapper = mkMapper(mapperName){ (config, key, aliases) =>
+      
+      val res = mapper.apply(config, key, aliases)
+      val resMapped = res.map(func)
+      resMapped
+    }
+    
+    InputArg[S](key, newMapper, argState, List.empty)
   }
 
-  override def flatMap[S](func: T => Try[S]): InputArg[S] = {
+  override def map[S](func: T => S): InputArg[S] = map("mapper")(func)
+  
+
+  def flatMap[S](mapperName: String)(func: T => Try[S]): InputArg[S] = {
     
-    InputArg[S](key, mkMapper{ mapper.apply(_, _, _).flatMap(func) }, argState, List.empty)
+    val newMapper = mkMapper(mapperName){ (config, key, aliases) =>
+      
+      val res = mapper.apply(config, key, aliases)
+      val resMapped = res.flatMap(func)
+      resMapped
+    }
+    
+    InputArg[S](key, newMapper, argState, List.empty)
+  }
+
+  override def flatMap[S](func: T => Try[S]): InputArg[S] = flatMap("mapper")(func)
+
+  
+  def mapLowLevel[S](mapperName: String)(func: (InputArg[T], FullConfig) => Try[S]): InputArg[S] = {
+    
+    val newMapper = mkMapper(mapperName){ (config, key, aliases) =>
+      
+      val resMapped = func(this, config)
+      resMapped
+    }
+    
+    InputArg[S](key, newMapper, argState, List.empty)
   }
 
   
-  def map[S](func: (InputArg[T], FullConfig) => Try[S]): InputArg[S] = {
+  def mapLowLevel[S](func: (InputArg[T], FullConfig) => Try[S]): InputArg[S] = mapLowLevel("mapper")(func)
     
-    InputArg[S](key, mkMapper{ (config, key, aliases) => func(this, config) }, argState, List.empty)
-  }
-
   
   /**
    * returns the strings not used by this argument

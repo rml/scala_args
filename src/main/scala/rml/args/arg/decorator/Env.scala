@@ -13,7 +13,7 @@ import rml.args.config.reader.CommandlineArgReader
  */
 object Env {
   
-  def apply[T](arg: InputArg[T]): InputArg[T] = arg.map { (arg: InputArg[T], config: FullConfig) =>  
+  def apply[T](arg: InputArg[T]): InputArg[T] = arg.mapLowLevel { (arg: InputArg[T], config: FullConfig) =>  
     
     val envVar = System.getenv(arg.key)
       

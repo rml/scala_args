@@ -30,7 +30,11 @@ final case class FuncArg[+T](mapper: FuncMapper[T], argState: ArgState = ArgStat
     new FuncArg(Mapper{ config => this.apply(config).flatMap(func)})
   }
   
+  def mapLowLevel[S](func: (FuncArg[T], FullConfig) => Try[S]): FuncArg[S] = {
+    new FuncArg(Mapper{ config => func(this, config)})
+  }
 
+  
   def inputArg: Map[String, InputArg[_]] = inputArgs.map(a => a.key -> a).toMap
 
   def inputArgOption(key: String): Option[InputArg[_]] = inputArg.get(key)
