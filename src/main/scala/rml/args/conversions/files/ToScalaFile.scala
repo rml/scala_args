@@ -1,4 +1,4 @@
-package rml.args.conversions.ScalaFiles
+package rml.args.conversions.files
 
 import scala.reflect.io.File
 import scala.reflect.io.Path.string2path

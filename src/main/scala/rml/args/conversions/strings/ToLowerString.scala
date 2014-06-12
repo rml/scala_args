@@ -19,7 +19,7 @@ trait ToLowerString extends NotRestricted {
 
 object ALowerString { def apply(key: String) = InputArg(key, new SingleArg[String] with ToLowerString) }
 
-object JLowerString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToLowerString { override val sep = ""} ) }
+object JLowerString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToLowerString) }
 
 object LowerStrings { def apply(key: String) = InputArg(key, new ListArg[String] with ToLowerString) }
 

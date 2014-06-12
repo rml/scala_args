@@ -19,7 +19,7 @@ trait ToUpperString extends NotRestricted {
 
 object AUpperString { def apply(key: String) = InputArg(key, new SingleArg[String] with ToUpperString) }
 
-object JUpperString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToUpperString { override val sep = ""} ) }
+object JUpperString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToUpperString) }
 
 object UpperStrings { def apply(key: String) = InputArg(key, new ListArg[String] with ToUpperString) }
 

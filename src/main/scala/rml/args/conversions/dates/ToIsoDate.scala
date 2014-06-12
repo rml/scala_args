@@ -39,7 +39,7 @@ object PIsoDate { def apply(pos: Int)    = InputArg("-", new ToIsoDate with Posi
 
 object Today {
   
-  def apply(): Arg[Date] = Func{
+  def apply(): FuncArg[Date] = Func{
     
     val f = new SimpleDateFormat("yyyy-MM-dd")
     f.parse(f.format(new Date()))

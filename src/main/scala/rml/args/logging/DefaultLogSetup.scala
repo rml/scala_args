@@ -5,12 +5,12 @@ import rml.args.arg.Func
 import rml.args.arg.decorator.Opt
 import rml.args.arg.function.FunctionOrigin
 import rml.args.config.reader.ConfReader
-import rml.args.register.FunctionRegister
+import rml.args.conversions.map.AMap
 import rml.args.conversions.map.AnEnum
 import rml.args.conversions.map.DynMaps
 import rml.args.conversions.strings.JString
-import rml.args.conversions.map.AMap
-
+import rml.args.register.@@
+import java.util.logging.LogManager
 
 object DefaultLogSetup extends LazyLogging {
 
@@ -33,21 +33,23 @@ object DefaultLogSetup extends LazyLogging {
   
   def apply(prefix: String, systemPrefix: String = "@") = {
 
+    LoggerManager.setLoglevel(LogLevel.ERROR)
     val initialConfig = ConfReader("", prefix, "conf")
 
     initiallogpattern(initialConfig).foreach(LoggerManager.setPattern)
     initialloglevel(initialConfig).foreach(LoggerManager.setLoglevel)
 
-    FunctionRegister(systemPrefix + "log") = Func(loglevel, loglayout, logpattern, loggers){ (loglevel, layout, pattern, loggers) =>
+    @@(systemPrefix + "log")-->
+    Func(loglevel, loglayout, logpattern, loggers){ (loglevel, layout, pattern, loggers) =>
 
-      println(LoggerManager.getLoggerMap())
-      
       loglevel.foreach{ ll =>
         LoggerManager.setLoglevel(ll, loggers.getOrElse(List(LoggerManager.rootLogger)))
       }
       
       layout.foreach(LoggerManager.setPattern)
       pattern.foreach(LoggerManager.setPattern)
+      
+      println("Loglevel: " + LoggerManager.getLoglevel)
     }
   }
 }

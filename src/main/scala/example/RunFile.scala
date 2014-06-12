@@ -6,7 +6,7 @@ import rml.args.arg.Func
 import rml.args.conversions.files.PFile
 import rml.args.conversions.files.CwdOrDir
 import rml.args.conversions.files.HomeOrDir
-import rml.args.conversions.ScalaFiles.PScalaFile
+import rml.args.conversions.files.PScalaFile
 
 object RunFile {
 

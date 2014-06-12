@@ -19,7 +19,7 @@ trait ToString extends NotRestricted {
 
 object AString { def apply(key: String) = InputArg(key, new SingleArg[String] with ToString) }
 
-object JString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToString { override val sep = ""} ) }
+object JString { def apply(key: String) = InputArg(key, new JoinArg[String] with ToString) }
 
 object Strings { def apply(key: String) = InputArg(key, new ListArg[String] with ToString) }
 

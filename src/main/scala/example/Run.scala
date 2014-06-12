@@ -18,9 +18,6 @@ object Run {
 
     val prefix = "GG_"
 
-    if(args.contains("-lldbg")) LoggerManager(DEBUG)
-    else  LoggerManager(INFO)
-    
     DefaultSetup(prefix)
     DefaultRunner(args, prefix)
   }
