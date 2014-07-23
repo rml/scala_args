@@ -32,7 +32,7 @@ object DefaultRunner extends Logging {
     FunctionRunner.run(fullConfig) match {
       case Success(res)                             => res
       case Failure(iae: IllegalArgException)        => printMessageAndStacktrace(iae, showStacktrace)
-      case Failure(fnfe: FunctionNotFoundException) => error("Function '" + fnfe.function.head + "' not found\nDid you mean one of these?")
+      case Failure(fnfe: FunctionNotFoundException) => error("Function '" + fnfe.function.head + "' not found")
       case Failure(e)                               => printMessageAndStacktrace(e, showStacktrace)
     }
     

@@ -1,14 +1,13 @@
 package rml.args.run
 
 import scala.util.Try
-
 import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
-
 import rml.args.arg.FuncArg
 import rml.args.config.ConfigAdjuster
 import rml.args.config.FullConfig
 import rml.args.exceptions.FunctionNotFoundException
 import rml.args.register.FunctionRegister
+import scala.util.Failure
 
 object FunctionRunner extends Logging {
 
@@ -28,7 +27,7 @@ object FunctionRunner extends Logging {
     val functionName = FunctionRegister.findLongestMatching(leadingTokens) match {
       
       case Some(k) => k
-      case None => throw new FunctionNotFoundException(leadingTokens)
+      case None => return Failure(new FunctionNotFoundException(leadingTokens))
     }
     
     debug("functionName: {}", functionName.mkString(" "))
