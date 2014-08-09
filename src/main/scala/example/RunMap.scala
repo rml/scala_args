@@ -3,10 +3,10 @@ package example
 import javax.swing.GroupLayout.Alignment
 import rml.args.arg.Func
 import rml.args.arg.function.FunctionOrigin
-import rml.args.register.FunctionRegister
-import rml.args.conversions.map.Maps
 import rml.args.conversions.map.AJavaEnum
 import rml.args.conversions.map.AnEnum
+import rml.args.conversions.map.Maps
+import rml.args.register.@@
 
 object RunMap {
 
@@ -27,9 +27,16 @@ object RunMap {
   
   val weekday = AnEnum("wd", WeekDay) -- "Weekday"
     
-  FunctionRegister("jenum")            = Func(jenumarg){println}
-  FunctionRegister("weekday")          = Func(weekday){println}
-  FunctionRegister("morse")            = Func(morse){ s => println(s.mkString(" "))}
-  FunctionRegister("unmorse")          = Func(unmorse){ s => println(s.mkString(""))}
+  @@("jenum") -->
+  Func(jenumarg){println}
+  
+  @@("weekday") -->
+  Func(weekday){println}
+  
+  @@("morse") -->
+  Func(morse){ s => println(s.mkString(" "))}
+  
+  @@("unmorse") -->
+  Func(unmorse){ s => println(s.mkString(""))}
   
 }
