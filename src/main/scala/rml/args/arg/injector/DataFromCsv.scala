@@ -9,14 +9,15 @@ trait DataFromCsv extends Injector {
 
   val files: Arg[List[File]]
   
-  override def inject(config: FullConfig, key: Map[String, String]): FullConfig = {
+  override def inject(config: FullConfig, keyColumn: String, keyValue: String): FullConfig = {
 
     files.apply(config).get.foreach{ file =>
-      CsvReader.findKey(file, key) match {
-        case Some(m) => return config.over(m.map{case(k,v) => (k,List(v))})
+      CsvReader.findKey(file, keyColumn, keyValue) match {
+        case Some(m) => return config.over(m)
         case None =>
       }
     }
     config
   }
 }
+

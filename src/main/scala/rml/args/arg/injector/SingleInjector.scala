@@ -15,9 +15,7 @@ abstract class SingleInjector[T](val arg: Arg[T], val valueArg: InputArg[String]
     
     valueArg(config).flatMap{ value =>
       
-      val injectValues = Map(keyx.getOrElse(valueArg.key) -> value)
-      
-      arg(inject(config, injectValues))
+      arg(inject(config, keyx.getOrElse(valueArg.key), value))
     }
   }
 

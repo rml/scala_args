@@ -1,17 +1,18 @@
 package example
 
 import scala.collection.JavaConversions.mapAsScalaMap
-
 import rml.args.arg.Func
 import rml.args.arg.function.FunctionOrigin
 import rml.args.arg.special.AllArgs
 import rml.args.arg.special.Flag
 import rml.args.conversions.db.DbFromFile
+import rml.args.conversions.db.DbMapFromFile
 import rml.args.conversions.db.DbsFromFile
 import rml.args.conversions.files.Files
 import rml.args.conversions.strings.AString
 import rml.args.conversions.strings.JString
 import rml.args.register.@@
+import rml.args.conversions.db.DbListFromFile
 
 object RunDiv {
 
@@ -36,6 +37,12 @@ object RunDiv {
 
   @@("dbsff", "Databases from file") --> 
   Func(DbsFromFile("db", Files("dbconf")) -- "Db"){println}
+  
+  @@("dbmff", "Database-Map from file") --> 
+  Func(DbMapFromFile("db", Files("dbconf")) -- "Db"){println}
+  
+  @@("dblff", "Database-List from file") --> 
+  Func(DbListFromFile(Files("dbconf"))){println}
   
   @@("ma", "MultiArg Test") -->
   Func(ma){println}

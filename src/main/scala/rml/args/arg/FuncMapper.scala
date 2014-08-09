@@ -19,5 +19,7 @@ object Mapper {
     override def apply(config: FullConfig): Try[T] = mapper(config)
   }
   
+  def apply[T](argsx: Arg[_]*)(mapper: FullConfig => Try[T]): FuncMapper[T] = apply(argsx.toList)(mapper)
+  
   def apply[T](mapper: FullConfig => Try[T]): FuncMapper[T] = apply(List.empty)(mapper)
 }

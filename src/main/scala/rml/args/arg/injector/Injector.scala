@@ -3,5 +3,5 @@ import rml.args.config.FullConfig
 
 trait Injector {
 
-  def inject(config: FullConfig, key: Map[String, String]): FullConfig
+  def inject(config: FullConfig, keyColumn: String, keyValue: String): FullConfig
 }

@@ -18,7 +18,7 @@ abstract class ListInjector[T](arg: Arg[T], val valueArg: InputArg[List[String]]
       
       val kkey: String = keyx.getOrElse(valueArg.key)
       
-      list.map { value => arg(inject(config, Map(kkey -> value))).get }
+      list.map { value => arg(inject(config, kkey, value)).get }
     }
   }
     
