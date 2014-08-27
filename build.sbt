@@ -9,9 +9,9 @@ version := scala.reflect.io.File("version.txt").lines.next.trim
 
 organization := "rml"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.2"
 
-crossScalaVersions := Seq("2.10.4", "2.11.1")
+crossScalaVersions := Seq("2.10.4", "2.11.2")
 
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
