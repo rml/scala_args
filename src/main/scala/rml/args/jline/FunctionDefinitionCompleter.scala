@@ -1,6 +1,6 @@
 package rml.args.jline
 
-import scala.collection.JavaConversions.seqAsJavaList
+import scala.collection.JavaConverters._
 
 import jline.console.completer.Completer
 import jline.console.completer.StringsCompleter
@@ -12,7 +12,7 @@ class FunctionDefinitionCompleter extends Completer {
 
   def complete(buffer: String, cursor: Int, candidates: java.util.List[CharSequence]): Int = {
     
-    val commandsCompleter = new StringsCompleter(FunctionRegister.commands(" "))
+    val commandsCompleter = new StringsCompleter(FunctionRegister.commands(" ").asJavaCollection)
 
     if(commandsCompleter.complete(buffer, cursor, candidates) == 0){
       return 0
@@ -42,7 +42,7 @@ class FunctionDefinitionCompleter extends Completer {
     
     if(functionArgs.trailingDash) { // new arg, taken from remainingArgs
 
-      val argsCompleter = new StringsCompleter(remainingArgs.map("-" + _).toList.sorted)
+      val argsCompleter = new StringsCompleter(remainingArgs.map("-" + _).toList.sorted.asJavaCollection)
       
       if(argsCompleter.complete("-", cursor, candidates) == 0){
         return buffer.size - 1
@@ -51,7 +51,7 @@ class FunctionDefinitionCompleter extends Completer {
     } else if(argToComplete && noArgValues && editingValue) { // new arg, taken from remainingArgs
 
       val args = if(allArgs.contains(lastArgKey)) remainingArgs + lastArgKey else remainingArgs
-      val argsCompleter = new StringsCompleter(args.map("-" + _).toList.sorted)
+      val argsCompleter = new StringsCompleter(args.map("-" + _).toList.sorted.asJavaCollection)
       
       if(argsCompleter.complete("-" + lastArgKey, cursor, candidates) == 0){
         return buffer.size - lastArgKey.size - 1
@@ -65,7 +65,7 @@ class FunctionDefinitionCompleter extends Completer {
         
         case setRestriction: SetRestriction =>
             val values = setRestriction.allowed
-            val valuesCompleter = new StringsCompleter(values.toList.sorted)
+            val valuesCompleter = new StringsCompleter(values.toList.sorted.asJavaCollection)
             val part = if(editingValue) lastArgValues.reverse.headOption.getOrElse("") else ""
             	
             	if(valuesCompleter.complete(part, cursor, candidates) == 0){

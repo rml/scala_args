@@ -6,7 +6,7 @@ import ch.qos.logback.classic.{Level => LogbackLevel}
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.ConsoleAppender
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import ch.qos.logback.classic.Logger
 
 //sealed abstract class LogLevel
@@ -101,7 +101,7 @@ object LoggerManager extends Logging {
   def getLoggers(): List[Logger] = {
     
     val loggerContext = rootLogger.getLoggerContext()
-    loggerContext.getLoggerList().toList
+    loggerContext.getLoggerList().asScala.toList
   }
 
   def getLoggerMap(): Map[String, Logger] = {

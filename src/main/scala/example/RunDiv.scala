@@ -1,6 +1,6 @@
 package example
 
-import scala.collection.JavaConversions.mapAsScalaMap
+import scala.collection.JavaConverters._
 import rml.args.arg.Func
 import rml.args.arg.function.FunctionOrigin
 import rml.args.arg.special.AllArgs
@@ -25,8 +25,7 @@ object RunDiv {
 
   @@("env") -->
   Func(AString("-") -> "" -- "Filter"){ f => 
-    import collection.JavaConversions._
-    for((k, v) <- System.getenv().toList.sortBy(_._1) if k.startsWith(f)) println(k + "\t" + v)
+    for((k, v) <- System.getenv().asScala.toList.sortBy(_._1) if k.startsWith(f)) println(k + "\t" + v)
   }
   
   @@("args") --> 

@@ -19,10 +19,10 @@ object DefaultJlineSetup extends LazyLogging {
     
     FunctionRegister(systemPrefix + "set") = Func(Strings0("-")){ envVar =>
       
-      import scala.collection.JavaConversions._
+      import scala.collection.JavaConverters._
       
       envVar match {
-        case Nil => System.getProperties().foreach{ case(k,v) => println(s"$k: $v")}
+        case Nil => System.getProperties().asScala.foreach{ case(k,v) => println(s"$k: $v")}
         case key :: Nil => logger.error(s"Value for key $key missing")
         case key :: value => System.setProperty(propertiesKey(key), value.mkString(" "))
       }

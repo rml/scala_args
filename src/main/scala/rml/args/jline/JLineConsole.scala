@@ -2,7 +2,7 @@ package rml.args.jline
 
 import java.io.File
 
-import scala.collection.JavaConversions.seqAsJavaList
+import scala.collection.JavaConverters._
 
 import com.typesafe.scalalogging.{LazyLogging => Logging}
 
@@ -34,7 +34,7 @@ object JLineConsole extends Logging {
       val completers = for{cmd <- FunctionRegister.commands("_")
         functionDefinition = FunctionRegister(cmd.split("_").toList)
       } yield {
-        new ArgumentCompleter(new StringsCompleter(cmd), new StringsCompleter(functionDefinition.args.flatMap(_.inputArgs).map("-" + _.key)))
+        new ArgumentCompleter(new StringsCompleter(cmd), new StringsCompleter(functionDefinition.args.flatMap(_.inputArgs).map("-" + _.key).asJavaCollection))
       }
       
       val console = new ConsoleReader()
