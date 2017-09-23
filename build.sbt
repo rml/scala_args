@@ -1,25 +1,20 @@
 
-import AssemblyKeys._
-
-assemblySettings
-
 name := "scala_args"
-
-version := scala.reflect.io.File("version.txt").lines.next.trim
 
 organization := "rml"
 
-scalaVersion := "2.11.2"
-
-crossScalaVersions := Seq("2.10.4", "2.11.2")
+scalaVersion := "2.12.3"
 
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+
+releaseSettings
 
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, scalaMajor)) if scalaMajor >= 11 =>
       libraryDependencies.value ++ Seq(
-        "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
+        "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
+        "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6"
       )
     case _ =>
       libraryDependencies.value ++ Seq(
@@ -27,13 +22,13 @@ libraryDependencies := {
   }
 }
 
-libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2"
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.0.13"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.5" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
-libraryDependencies += "jline" % "jline" % "2.11"
+libraryDependencies += "jline" % "jline" % "2.14.2"
 
 scalacOptions += "-deprecation"
 
