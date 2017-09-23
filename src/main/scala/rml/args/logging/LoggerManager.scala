@@ -1,7 +1,7 @@
 package rml.args.logging
 
 import org.slf4j.LoggerFactory
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import com.typesafe.scalalogging.{LazyLogging => Logging}
 import ch.qos.logback.classic.{Level => LogbackLevel}
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.spi.ILoggingEvent

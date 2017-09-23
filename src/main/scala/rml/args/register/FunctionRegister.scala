@@ -1,9 +1,9 @@
 package rml.args.register
 
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import com.typesafe.scalalogging.{LazyLogging => Logging}
 import rml.args.exceptions.IllegalArgException
 import rml.args.arg.FuncArg
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import com.typesafe.scalalogging.{LazyLogging => Logging}
 
 /**
  * Central register for function definitions

@@ -3,7 +3,7 @@ package rml.args.run
 import java.io.File
 import scala.reflect.io.Path.string2path
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 
 import rml.args.arg.{/ => /}
 import rml.args.arg.Func

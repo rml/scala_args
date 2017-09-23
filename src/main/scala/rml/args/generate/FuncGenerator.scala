@@ -6,7 +6,7 @@ object FuncGenerator {
 
     println("package rml.args.arg")  
     println("")  
-	println("import com.typesafe.scalalogging.slf4j.LazyLogging")  
+	println("import com.typesafe.scalalogging.LazyLogging")  
 	println("import rml.args.config.FullConfig")  
 	println("import rml.args.manager.FunctionOrigin")  
 	println("")  

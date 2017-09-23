@@ -2,7 +2,7 @@ package rml.args.arg
 
 import rml.args.config.FullConfig
 import rml.args.arg.function.FunctionOrigin
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import rml.args.arg.special.FixArg
 import rml.args.exceptions.IllegalArgException
 import scala.util.Try

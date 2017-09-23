@@ -2,7 +2,7 @@ package rml.args.run
 
 import scala.util.Failure
 import scala.util.Success
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import com.typesafe.scalalogging.{LazyLogging => Logging}
 import rml.args.config.FullConfig
 import rml.args.config.reader.ConfReader
 import rml.args.exceptions.FunctionNotFoundException

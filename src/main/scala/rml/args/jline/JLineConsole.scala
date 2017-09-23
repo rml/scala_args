@@ -4,7 +4,7 @@ import java.io.File
 
 import scala.collection.JavaConversions.seqAsJavaList
 
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import com.typesafe.scalalogging.{LazyLogging => Logging}
 
 import jline.TerminalFactory
 import jline.console.ConsoleReader

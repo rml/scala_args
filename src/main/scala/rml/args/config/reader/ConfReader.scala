@@ -3,7 +3,7 @@ package rml.args.config.reader
 import java.io.IOException
 import java.io.File
 import scala.reflect.io.Path.string2path
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import rml.args.config.CmdLineArgs
 import rml.args.config.Config
 import rml.args.config.FullConfig

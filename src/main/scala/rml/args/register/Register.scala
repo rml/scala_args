@@ -4,7 +4,7 @@ import rml.args.arg.Arg
 import rml.args.arg.ArgState
 import rml.args.arg.Func
 import rml.args.arg.function.FunctionOrigin
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import rml.args.arg.FuncArg
 
 object @@ {

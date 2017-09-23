@@ -1,6 +1,6 @@
 package rml.args.config.reader
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 
 trait PrefixArgReader extends LazyLogging {
 

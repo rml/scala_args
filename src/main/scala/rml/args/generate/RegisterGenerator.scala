@@ -11,7 +11,7 @@ object RegisterGenerator {
     println("import rml.args.arg.Func")  
     println("import rml.args.manager.FunctionOrigin")  
     println("import rml.args.manager.FunctionRegister")  
-    println("import com.typesafe.scalalogging.slf4j.LazyLogging")
+    println("import com.typesafe.scalalogging.LazyLogging")
     println("")
 	println("object Register extends LazyLogging {")  
 	println("")  

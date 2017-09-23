@@ -1,6 +1,6 @@
 package rml.args.logging
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import rml.args.arg.Func
 import rml.args.arg.decorator.Opt
 import rml.args.arg.function.FunctionOrigin

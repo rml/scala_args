@@ -3,7 +3,7 @@ package rml.args.config
 import java.text.SimpleDateFormat
 import java.util.Date
 import scala.util.Try
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import com.typesafe.scalalogging.{LazyLogging => Logging}
 import scala.util.Success
 import scala.util.Failure
 import rml.args.exceptions.IllegalArgException

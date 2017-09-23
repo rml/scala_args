@@ -1,7 +1,7 @@
 package rml.args.help
 
 import java.io.PrintStream
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import rml.args.arg.Func
 import rml.args.arg.FuncArg
 import rml.args.arg.InputArg

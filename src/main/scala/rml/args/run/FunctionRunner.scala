@@ -1,7 +1,7 @@
 package rml.args.run
 
 import scala.util.Try
-import com.typesafe.scalalogging.slf4j.{LazyLogging => Logging}
+import com.typesafe.scalalogging.{LazyLogging => Logging}
 import rml.args.arg.FuncArg
 import rml.args.config.ConfigAdjuster
 import rml.args.config.FullConfig
