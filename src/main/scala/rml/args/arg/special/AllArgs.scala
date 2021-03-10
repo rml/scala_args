@@ -1,12 +1,13 @@
 package rml.args.arg.special
 
-import rml.args.arg.Mapper
-import rml.args.arg.FuncArg
-import scala.util.Success
+import rml.args.arg.{Arg, FuncArg, Mapper}
 import rml.args.config.FullConfig
-import rml.args.arg.Arg
+
+import scala.util.Success
 
 object AllArgs {
-  
-  def apply(): Arg[FullConfig] = FuncArg(Mapper(fullConfig => Success(fullConfig)))
+
+  def apply(): Arg[FullConfig] = FuncArg(
+    Mapper(fullConfig => Success(fullConfig))
+  )
 }

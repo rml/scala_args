@@ -1,6 +1,7 @@
 package rml.args.exceptions
 
-class FunctionNotFoundException(val function: List[String], source: Throwable) extends IllegalStateException(function.mkString(" "), source) {
+class FunctionNotFoundException(val function: List[String], source: Throwable)
+    extends IllegalStateException(function.mkString(" "), source) {
 
   def this() = this(null, null)
 

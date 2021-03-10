@@ -1,9 +1,6 @@
 package example
 
-import rml.args.run.DefaultRunner
-import rml.args.run.DefaultSetup
-import rml.args.logging.LoggerManager
-import rml.args.logging.LogLevel._
+import rml.args.run.{DefaultRunner, DefaultSetup}
 
 object Run {
 

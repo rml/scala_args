@@ -4,5 +4,5 @@ object DateRestriction extends Restriction
 
 trait DateRestricted {
 
-  val getRestriction = DateRestriction
+  val getRestriction: DateRestriction.type = DateRestriction
 }
