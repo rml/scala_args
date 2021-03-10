@@ -2,7 +2,7 @@ package rml.args.generate
 
 object ArgsGenerator {
 
-  def generate(maxArgCount: Int) {
+  def generate(maxArgCount: Int): Unit = {
 
     println("package rml.args.arg")  
     println("")  
@@ -25,9 +25,9 @@ object ArgsGenerator {
       val funcargs = if(n == 0) "" else args.map(_ + "(m).get").mkString("(", ", ", ")") // (arg1(m).get, arg2(m).get, ...)
       val logargs = args.map(arg => "${" + arg + "(m).get}").mkString("(", ", ", ")") // (${arg1(m).get}, ${arg2(m).get}, ...)
 
-        println(s"case class Args${n}${functypeNoR}(${funcargsT}) extends LazyLogging {")
+        println(s"case class Args$n$functypeNoR($funcargsT) extends LazyLogging {")
         println("")
-        println(s"  val args = List(${arglist})")
+        println(s"  val args = List($arglist)")
         println("")
 
       
@@ -81,7 +81,7 @@ object ArgsGenerator {
       val funcargs = if(n == 0) "" else args.map(_ + "(m)").mkString("(", ", ", ")") // (arg1(m), arg2(m), ...)
       val logargs = args.map(arg => "${" + arg + "(m)}").mkString("(", ", ", ")") // (${arg1(m)}, ${arg2(m)}, ...)
 
-      println(s"  def apply${functypeNoR}(${funcargsT}): Args${n}${functypeNoR} = Args${n}(${arglist})")
+      println(s"  def apply$functypeNoR($funcargsT): Args$n$functypeNoR = Args$n($arglist)")
       println("")
     }
     

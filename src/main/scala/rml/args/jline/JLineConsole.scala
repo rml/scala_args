@@ -2,7 +2,7 @@ package rml.args.jline
 
 import java.io.File
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import com.typesafe.scalalogging.{LazyLogging => Logging}
 
@@ -19,9 +19,9 @@ object JLineConsole extends Logging {
 
   import logger._
 
-  def open(prompt: String, prefix: String) = {
+  def open(prompt: String, prefix: String): Unit = {
 
-    def exit(history: FileHistory) = {
+    def exit(history: FileHistory): Unit = {
 
       history.flush()
       System.exit(0)

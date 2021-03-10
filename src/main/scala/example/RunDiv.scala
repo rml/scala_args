@@ -1,7 +1,7 @@
 package example
 
-import scala.collection.JavaConverters._
-import rml.args.arg.Func
+import scala.jdk.CollectionConverters._
+import rml.args.arg.{Func, FuncArg}
 import rml.args.arg.function.FunctionOrigin
 import rml.args.arg.special.AllArgs
 import rml.args.arg.special.Flag
@@ -16,9 +16,9 @@ import rml.args.conversions.db.DbListFromFile
 
 object RunDiv {
 
-  implicit val origin = FunctionOrigin(getClass)
+  implicit val origin: FunctionOrigin = FunctionOrigin(getClass)
 
-  val ma = Func(AString("a") -- "aa", AString("b") -- "bb"){ _ + " " + _}
+  val ma: FuncArg[String] = Func(AString("a") -- "aa", AString("b") -- "bb"){ _ + " " + _}
   
   @@("remote add") -->
   Func(Flag("v"), AString("url")){ (verbose, url) => if(verbose) println(url) }

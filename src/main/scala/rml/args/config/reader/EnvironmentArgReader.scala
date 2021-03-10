@@ -1,8 +1,8 @@
 package rml.args.config.reader
 
-import collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 object EnvironmentArgReader extends PrefixArgReader {
 
-  def getMap = Map.empty ++ System.getenv().asScala
+  def getMap: Map[String, String] = Map.empty ++ System.getenv().asScala
 }

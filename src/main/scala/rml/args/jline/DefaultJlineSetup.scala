@@ -9,27 +9,27 @@ import rml.args.conversions.strings.AString
 
 object DefaultJlineSetup extends LazyLogging {
 
-  implicit val origin = FunctionOrigin("DefaultJlineSetup")
+  implicit val origin: FunctionOrigin = FunctionOrigin("DefaultJlineSetup")
   
-  def apply(prefix: String, systemPrefix: String = "@") = {
+  def apply(prefix: String, systemPrefix: String = "@"): Unit = {
 
     FunctionRegister("") = Func{ JLineConsole.open(prefix.replaceAll("_$", ""), prefix) } -- "Interactive mode"
 
     def propertiesKey(key: String): String = prefix.toLowerCase.replaceAll("_", ".") + key
     
     FunctionRegister(systemPrefix + "set") = Func(Strings0("-")){ envVar =>
-      
-      import scala.collection.JavaConverters._
+
+      import scala.jdk.CollectionConverters._
       
       envVar match {
-        case Nil => System.getProperties().asScala.foreach{ case(k,v) => println(s"$k: $v")}
+        case Nil => System.getProperties.asScala.foreach{ case(k,v) => println(s"$k: $v")}
         case key :: Nil => logger.error(s"Value for key $key missing")
         case key :: value => System.setProperty(propertiesKey(key), value.mkString(" "))
       }
     }
 
     FunctionRegister(systemPrefix + "unset") = Func(AString("-")){ key =>
-      val v = System.getProperties().remove(propertiesKey(key))
+      val v = System.getProperties.remove(propertiesKey(key))
       logger.debug(s"Key $key with value $v removed")
     }
 

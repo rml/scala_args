@@ -1,6 +1,6 @@
 package rml.args.jline
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import jline.console.completer.Completer
 import jline.console.completer.StringsCompleter
@@ -12,7 +12,7 @@ class FunctionDefinitionCompleter extends Completer {
 
   def complete(buffer: String, cursor: Int, candidates: java.util.List[CharSequence]): Int = {
     
-    val commandsCompleter = new StringsCompleter(FunctionRegister.commands(" ").asJavaCollection)
+    val commandsCompleter = new StringsCompleter(FunctionRegister.commands().asJavaCollection)
 
     if(commandsCompleter.complete(buffer, cursor, candidates) == 0){
       return 0
@@ -23,7 +23,7 @@ class FunctionDefinitionCompleter extends Completer {
     val functionArgs = CommandlineArgReader(checkCmd)
     val key = FunctionRegister.findLongestMatching(functionArgs.func :: functionArgs.subfuncs)
     
-    if(!key.isDefined){
+    if(key.isEmpty){
       return -1
     }
     
@@ -45,7 +45,7 @@ class FunctionDefinitionCompleter extends Completer {
       val argsCompleter = new StringsCompleter(remainingArgs.map("-" + _).toList.sorted.asJavaCollection)
       
       if(argsCompleter.complete("-", cursor, candidates) == 0){
-        return buffer.size - 1
+        return buffer.length - 1
       }
 
     } else if(argToComplete && noArgValues && editingValue) { // new arg, taken from remainingArgs
@@ -54,7 +54,7 @@ class FunctionDefinitionCompleter extends Completer {
       val argsCompleter = new StringsCompleter(args.map("-" + _).toList.sorted.asJavaCollection)
       
       if(argsCompleter.complete("-" + lastArgKey, cursor, candidates) == 0){
-        return buffer.size - lastArgKey.size - 1
+        return buffer.length - lastArgKey.length - 1
       }
       
     } else if(argToComplete && functionDefinition.inputArg.contains(lastArgKey)) {
@@ -69,7 +69,7 @@ class FunctionDefinitionCompleter extends Completer {
             val part = if(editingValue) lastArgValues.reverse.headOption.getOrElse("") else ""
             	
             	if(valuesCompleter.complete(part, cursor, candidates) == 0){
-            		return buffer.size - part.size
+            		return buffer.length - part.length
             	}
         case _ => -1
       }

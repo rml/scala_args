@@ -6,7 +6,7 @@ import ch.qos.logback.classic.{Level => LogbackLevel}
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.ConsoleAppender
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import ch.qos.logback.classic.Logger
 
 //sealed abstract class LogLevel
@@ -29,11 +29,11 @@ object LoggerManager extends Logging {
   import ch.qos.logback.classic.{Level => LogbackLevel}
   import logger._
 
-  val rootLogger = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME).asInstanceOf[ch.qos.logback.classic.Logger]
+  val rootLogger: Logger = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME).asInstanceOf[ch.qos.logback.classic.Logger]
   
-  def apply(level: LogLevel) = setLoglevel(level)
+  def apply(level: LogLevel): Unit = setLoglevel(level)
   
-  def apply() = getLoglevel()
+  def apply(): LogLevel = getLoglevel
   
   def mapLevel(level: LogLevel): LogbackLevel = {
     
@@ -48,21 +48,21 @@ object LoggerManager extends Logging {
     }
   }
   
-  def setLoglevel(level: LogLevel) = {
+  def setLoglevel(level: LogLevel): Unit = {
 
     rootLogger.setLevel(mapLevel(level))
   }
   
-  def setLoglevel(level: LogLevel, loggers: List[Logger]) = {
+  def setLoglevel(level: LogLevel, loggers: List[Logger]): Unit = {
     
     for(logger <- loggers){
       logger.setLevel(mapLevel(level))
     }
   }
   
-  def getLoglevel(): LogLevel = {
+  def getLoglevel: LogLevel = {
 
-    rootLogger.getLevel() match {
+    rootLogger.getLevel match {
       case LogbackLevel.ALL   => ALL
       case LogbackLevel.TRACE => TRACE
       case LogbackLevel.DEBUG => DEBUG
@@ -79,7 +79,7 @@ object LoggerManager extends Logging {
    */
   def setPattern(pattern: String): Unit = {
     
-    val loggerContext = rootLogger.getLoggerContext()
+    val loggerContext = rootLogger.getLoggerContext
     
     val encoder = new PatternLayoutEncoder()
     encoder.setContext(loggerContext)
@@ -98,13 +98,13 @@ object LoggerManager extends Logging {
     info(s"Set logger layout to pattern: '$pattern'")    
   }
   
-  def getLoggers(): List[Logger] = {
+  def getLoggers: List[Logger] = {
     
-    val loggerContext = rootLogger.getLoggerContext()
-    loggerContext.getLoggerList().asScala.toList
+    val loggerContext = rootLogger.getLoggerContext
+    loggerContext.getLoggerList.asScala.toList
   }
 
-  def getLoggerMap(): Map[String, Logger] = {
+  def getLoggerMap: Map[String, Logger] = {
     getLoggers.map(l => l.getName -> l).toMap
   }
 

@@ -24,30 +24,30 @@ trait ToDir extends FileRestricted {
     if(!dir.exists || dir.isDirectory)
       dir
     else
-      throw new IllegalArgException("'" + dir.getAbsolutePath() + "' is not a directory")
+      throw new IllegalArgException("'" + dir.getAbsolutePath + "' is not a directory")
   }
 }
 
 
-object ADir { def apply(key: String) = InputArg(key, new SingleArg[File] with ToDir) }
+object ADir { def apply(key: String): InputArg[File] = InputArg(key, new SingleArg[File] with ToDir) }
 
-object JDir { def apply(key: String) = InputArg(key, new JoinArg[File] with ToDir { override val sep = ""} ) }
+object JDir { def apply(key: String): InputArg[File] = InputArg(key, new JoinArg[File] with ToDir { override val sep = ""} ) }
 
-object Dirs { def apply(key: String) = InputArg(key, new ListArg[File] with ToDir) }
+object Dirs { def apply(key: String): InputArg[List[File]] = InputArg(key, new ListArg[File] with ToDir) }
 
-object Dirs0{ def apply(key: String) = InputArg(key, new ListArg0[File] with ToDir) }
+object Dirs0{ def apply(key: String): InputArg[List[File]] = InputArg(key, new ListArg0[File] with ToDir) }
 
-object PDir { def apply(pos: Int)    = InputArg("-", new ToDir with PositionalArg[File]{ val position = pos }) }
+object PDir { def apply(pos: Int): InputArg[File] = InputArg("-", new ToDir with PositionalArg[File]{ val position: Int = pos }) }
 
 
 object CwdOrDir{
   
-  def apply(key: String) = ADir(key) -> FixArg(new File("."))
+  def apply(key: String): InputArg[File] = ADir(key) //-> FixArg(new File("."))
 }
 
 
 object HomeOrDir {
 
-  def apply(key: String) = ADir(key) -> Env(ADir("HOME"))
+  def apply(key: String): InputArg[File] = ADir(key) -> Env(ADir("HOME"))
 }
 

@@ -9,10 +9,10 @@ import rml.args.register.@@
 
 object RunFile {
 
-  implicit val origin = FunctionOrigin("RunFile")
+  implicit val origin: FunctionOrigin = FunctionOrigin("RunFile")
 
   @@("cat") -->
-  Func(PScalaFile(1)){ f => f.lines.foreach(println) }
+  Func(PScalaFile(1)){ f => f.lines().foreach(println) }
   
   @@("cod") -->
   Func(CwdOrDir("-")){ println }

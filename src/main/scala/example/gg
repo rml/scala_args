@@ -1,6 +1,21 @@
 #!/bin/bash
 
-SCALA_ARGS_BIN="$(dirname $0)/../../../../target/scala-2.10/classes"
+export TERM=xterm-color
 
-scala -cp "$SCALA_ARGS_BIN" example.Run "$@"
+SCALA_ARGS_BIN="$(dirname $0)/../../../../target/scala-2.13/classes"
+
+M2=/home/ralph/.cache/coursier/v1/https/repo1.maven.org/maven2
+
+D1=$M2/com/typesafe/scala-logging/scala-logging_2.13/3.9.2/scala-logging_2.13-3.9.2.jar
+D2=$M2/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar
+D3=$M2/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar
+D4=$M2/org/slf4j/slf4j-api/1.7.26/slf4j-api-1.7.26.jar
+D5=$M2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2/scala-parser-combinators_2.13-1.1.2.jar
+D6=$M2/jline/jline/2.14.2/jline-2.14.2.jar
+
+echo $SCALA_ARGS_BIN
+
+ls $SCALA_ARGS_BIN
+
+scala -cp "$SCALA_ARGS_BIN:$D1:$D2:$D3:$D4:$D5:$D6" example.Run "$@"
 

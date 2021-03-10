@@ -1,7 +1,6 @@
 package example
 
-import rml.args.arg.{/ => /}
-import rml.args.arg.Func
+import rml.args.arg.{/, Func, InputArg}
 import rml.args.arg.decorator.Opt
 import rml.args.arg.function.FunctionOrigin
 import rml.args.arg.special.Flag
@@ -23,9 +22,9 @@ import rml.args.register.FunctionRegister
 
 object RunBasic {
   
-  implicit val origin = FunctionOrigin("RunBasic")
+  implicit val origin: FunctionOrigin = FunctionOrigin("RunBasic")
 
-  val x = AnInt("x")
+  val x: InputArg[Int] = AnInt("x")
   
   @@("sq", "Calculate square") -->
   Func(AnInt("x") ~ "-" -> 10 -- "Number"){ x =>
@@ -75,7 +74,7 @@ object RunBasic {
   Func(Floats0("-")){println}
   
   @@("pos", "Tryal positional arguments") -->
-  Func(Opt(PString(1)) -- "p1", Opt(PString(2)) -- "p2"){ (a, b) => println(a + " " + b)}
+  Func(Opt(PString(1)) -- "p1", Opt(PString(2)) -- "p2"){ (a, b) => println(s"$a $b")}
 
   @@("pos2", "Positional arguments")
   Func(PString(1) -- "p1", PString(2) -- "p2"){ (a, b) => println(a + " " + b)}

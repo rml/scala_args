@@ -29,8 +29,8 @@ object CsvReader {
     val source = Source.fromFile(file)
     
     try {
-    	val lines = source.getLines
-    	val cols = lines.next.split("\t")
+    	val lines = source.getLines()
+    	val cols = lines.next().split("\t")
     	lines.map(l => cols.zip(l.split("\t")).toMap).toList
     } finally {
       

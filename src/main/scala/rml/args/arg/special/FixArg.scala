@@ -11,6 +11,6 @@ import rml.args.arg.FuncArg
  */
 object FixArg {
   
-  def apply[T](fixArg: T) = FuncArg(Mapper(x => Success(fixArg)))
+  def apply[T](fixArg: T): FuncArg[T] = FuncArg(Mapper(x => Success(fixArg)))
 
 }

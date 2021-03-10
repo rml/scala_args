@@ -2,7 +2,7 @@ package rml.args.generate
 
 object RegisterGenerator {
 
-  def generate(maxArgCount: Int) {
+  def generate(maxArgCount: Int): Unit = {
 
     println("package rml.args.register")  
     println("")  

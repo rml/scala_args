@@ -6,14 +6,14 @@ import scala.io.Source
 
 case class FileArgReader(propFile: File) extends PrefixArgReader {
 
-  def getMap = {
+  def getMap: Map[String, String] = {
       
       val source = Source.fromFile(propFile)
       
       try {
         
     	  for{
-    		  l <- source.getLines.toList
+    		  l <- source.getLines().toList
     		  line = l.trim if !(line.isEmpty || line.startsWith("#"))
     	  } yield {
     		  val split = line.span(_ != '=')

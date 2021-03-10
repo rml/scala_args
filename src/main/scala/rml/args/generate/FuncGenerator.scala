@@ -2,7 +2,7 @@ package rml.args.generate
 
 object FuncGenerator {
 
-  def generate(maxArgCount: Int) {
+  def generate(maxArgCount: Int): Unit = {
 
     println("package rml.args.arg")  
     println("")  
@@ -29,7 +29,7 @@ object FuncGenerator {
       if(n == 0){
         println(s"  def apply[R](func: => R)(implicit orig: FunctionOrigin) = {")
       } else {
-        println(s"  def apply[${functype}]($funcargsT)(func: Function$n[$functype])(implicit orig: FunctionOrigin) = {")
+        println(s"  def apply[$functype]($funcargsT)(func: Function$n[$functype])(implicit orig: FunctionOrigin) = {")
       }
       
       println("")
