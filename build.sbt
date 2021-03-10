@@ -1,13 +1,15 @@
-
 name := "scala_args"
 
 organization := "rml"
 
 scalaVersion := "2.13.4"
 
-//resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
-
-// releaseSettings
+publishTo := Some(
+  MavenCache(
+    "local-maven",
+    file(sys.env.getOrElse("HOME", ".") + "/.m2/repository/")
+  )
+)
 
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
@@ -22,20 +24,19 @@ libraryDependencies := {
   }
 }
 
-libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
+libraryDependencies ++= Seq(
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "org.scalatest" %% "scalatest" % "3.2.2" % "test",
+  "org.jline" % "jline" % "3.19.0",
+  "org.fusesource.jansi" % "jansi" % "2.1.0"
+)
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
-
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.2" % "test"
-
-libraryDependencies += "jline" % "jline" % "2.14.2"
-
-scalacOptions += "-deprecation"
-
-scalacOptions += "-feature"
+scalacOptions ++= Seq(
+  "-deprecation",
+  "-feature"
+)
 
 mainClass in (Compile, run) := Some("example.Run")
-
-//mainClass in Runtime := Some("example.Run")
 
 mainClass in (Compile, packageBin) := Some("example.Run")

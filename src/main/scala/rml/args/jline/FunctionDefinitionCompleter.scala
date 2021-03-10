@@ -1,28 +1,48 @@
 package rml.args.jline
 
-import scala.jdk.CollectionConverters._
-
-import jline.console.completer.Completer
-import jline.console.completer.StringsCompleter
+import com.typesafe.scalalogging.LazyLogging
+import org.jline.reader.{Candidate, Completer, LineReader, ParsedLine}
+import rml.args.arg.restriction.SetRestriction
 import rml.args.config.reader.CommandlineArgReader
 import rml.args.register.FunctionRegister
-import rml.args.arg.restriction.SetRestriction
 
-class FunctionDefinitionCompleter extends Completer {
+import java.util
 
-  def complete(
-      buffer: String,
-      cursor: Int,
-      candidates: java.util.List[CharSequence]
-  ): Int = {
+class FunctionDefinitionCompleter extends Completer with LazyLogging {
 
-    val commandsCompleter = new StringsCompleter(
-      FunctionRegister.commands().asJavaCollection
-    )
+  override def complete(
+      reader: LineReader,
+      line: ParsedLine,
+      candidates: util.List[Candidate]
+  ): Unit = {
 
-    if (commandsCompleter.complete(buffer, cursor, candidates) == 0) {
-      return 0
+    val commands = FunctionRegister.commands().toSet
+    val input = line.line()
+
+    if (input.trim.isEmpty) {
+      FunctionRegister
+        .commands()
+        .map(c => c.split(" ")(0))
+        .distinct
+        .foreach(c => candidates.add(new Candidate(c)))
+    } else {
+      commands
+        .collect {
+          case command if command startsWith input => command.split(" ")
+        }
+        .collect {
+          case parts if parts.length >= line.wordIndex() =>
+            parts(line.wordIndex())
+        }
+        .foreach(c => candidates.add(new Candidate(c)))
     }
+
+    if (input.trim.nonEmpty) {
+      getArgs(input) foreach (cand => candidates.add(new Candidate(cand)))
+    }
+  }
+
+  private def getArgs(buffer: String): List[String] = {
 
     val baseCmd = buffer.trim
     val checkCmd =
@@ -34,7 +54,7 @@ class FunctionDefinitionCompleter extends Completer {
     )
 
     if (key.isEmpty) {
-      return -1
+      return Nil
     }
 
     val functionDefinition = FunctionRegister.get(key.get)
@@ -52,52 +72,25 @@ class FunctionDefinitionCompleter extends Completer {
     val editingValue = !buffer.endsWith(" ")
 
     if (functionArgs.trailingDash) { // new arg, taken from remainingArgs
-
-      val argsCompleter = new StringsCompleter(
-        remainingArgs.map("-" + _).toList.sorted.asJavaCollection
-      )
-
-      if (argsCompleter.complete("-", cursor, candidates) == 0) {
-        return buffer.length - 1
-      }
-
+      remainingArgs.map("-" + _).toList
     } else if (argToComplete && noArgValues && editingValue) { // new arg, taken from remainingArgs
-
       val args =
         if (allArgs.contains(lastArgKey)) remainingArgs + lastArgKey
         else remainingArgs
-      val argsCompleter = new StringsCompleter(
-        args.map("-" + _).toList.sorted.asJavaCollection
-      )
-
-      if (argsCompleter.complete("-" + lastArgKey, cursor, candidates) == 0) {
-        return buffer.length - lastArgKey.length - 1
-      }
-
+      args.map("-" + _).toList
     } else if (
       argToComplete && functionDefinition.inputArg.contains(lastArgKey)
     ) {
-
       val argDef = functionDefinition.inputArg(lastArgKey)
-
       argDef.restriction match {
-
         case setRestriction: SetRestriction =>
           val values = setRestriction.allowed
-          val valuesCompleter = new StringsCompleter(
-            values.toList.sorted.asJavaCollection
-          )
-          val part =
-            if (editingValue) lastArgValues.reverse.headOption.getOrElse("")
-            else ""
-
-          if (valuesCompleter.complete(part, cursor, candidates) == 0) {
-            return buffer.length - part.length
-          }
-        case _ => -1
+          values.toList
+        case _ =>
+          Nil
       }
+    } else {
+      Nil
     }
-
-    -1
   }
 }
