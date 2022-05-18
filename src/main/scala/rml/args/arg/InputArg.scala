@@ -142,6 +142,12 @@ final case class InputArg[+T](
     defaultArgs: _*
   )
 
+  def withDefault[X >: T](defaultArg: Arg[X]): InputArg[X] =
+    copy(defaultArgs = defaultArg :: Nil)
+  def ->[X >: T](defaultArg: Arg[X]): InputArg[X] = withDefault(
+    defaultArg
+  )
+
   def withDefault[X >: T](default: X): InputArg[X] = withDefault(
     FixArg(default)
   )
