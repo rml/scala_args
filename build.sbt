@@ -37,6 +37,6 @@ scalacOptions ++= Seq(
   "-feature"
 )
 
-mainClass in (Compile, run) := Some("example.Run")
+Compile / run / mainClass := Some("example.Run")
 
-mainClass in (Compile, packageBin) := Some("example.Run")
+Compile / packageBin / mainClass := Some("example.Run")
