@@ -142,20 +142,10 @@ final case class InputArg[+T](
     defaultArgs: _*
   )
 
-  def withFixDefault[X >: T](default: X): InputArg[X] = withDefault(
+  def withDefault[X >: T](default: X): InputArg[X] = withDefault(
     FixArg(default)
   )
-  def ->[X >: T](default: X)(implicit m: Manifest[X]): InputArg[X] =
-    withFixDefault(default)
-
-//  def withDefault[X >: T](da1: Arg[X], da2: Arg[X], defaultArgs: Arg[X]*): InputArg[X] = copy(defaultArgs = da1 :: da2 :: defaultArgs.toList)
-//  def         -> [X >: T](da1: Arg[X], da2: Arg[X], defaultArgs: Arg[X]*): InputArg[X] = withDefault(da1, da2, defaultArgs: _*)
-//
-//  def withDefault[X >: T](default: X): InputArg[X] = default match {
-//    case a: Arg[X] => copy(defaultArgs = a :: Nil)
-//    case _ => copy(defaultArgs = FixArg(default) :: Nil)
-//  }
-//  def        -> [X >: T](default: X): InputArg[X] = withDefault(default)
+  def ->[X >: T](default: X): InputArg[X] = withDefault(default)
 
   def withDescription(desc: String): InputArg[T] =
     copy(argState = argState.copy(description = desc))
