@@ -2,7 +2,7 @@ name := "scala_args"
 
 organization := "rml"
 
-scalaVersion := "2.13.4"
+scalaVersion := "2.13.8"
 
 publishTo := Some(
   MavenCache(
